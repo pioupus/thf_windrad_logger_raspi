@@ -35,6 +35,5 @@ for filename in os.listdir(directory):
 print(files_which_already_ran)
 
 with open(files_which_already_ran_fn, 'w') as files_which_already_ran_file:
-        
     for file_name_to_not_run_again in files_which_already_ran:
         files_which_already_ran_file.write("%s\n" % file_name_to_not_run_again)
