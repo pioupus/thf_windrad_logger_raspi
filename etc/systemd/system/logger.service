@@ -1,14 +1,15 @@
 [Unit]
-Description=My service
+Description=logger service
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/python3 -u main.py
-WorkingDirectory=/home/pi/myscript
+ExecStart=start_service_pi.sh
+WorkingDirectory=/home/pi/thf_windrad_logger_raspi/logger/
 StandardOutput=inherit
 StandardError=inherit
 Restart=always
 User=pi
+RequiresMountsFor=/media/usbstick/
 
 [Install]
 WantedBy=multi-user.target 
