@@ -1,11 +1,15 @@
 #!/usr/bin/env python 
 import subprocess
-import os
+import os,sys
 
 
-SERVICE_TARGET = "/etc/systemd/system/"
+ABSOLUTE_FILE_DO_UPDATE_FILE_PATH = os.path.abspath(os.path.dirname(sys.argv[0]))
+os.chdir(ABSOLUTE_FILE_DO_UPDATE_FILE_PATH) #in case we run from different file path. happens when called from cron
+
+ENABLE_RUN_ONCE = True
 LOCAL_SERVICE_DIRECTORY = "../etc/systemd/system"
-SERVICE_TARGET = "~/test/systemd/system/"
+SERVICE_TARGET = "/etc/systemd/system/"
+#SERVICE_TARGET = "~/test/systemd/system/"
 
 def get_services_in_local_folder(list_of_current_services):
     for filename in os.listdir(LOCAL_SERVICE_DIRECTORY):
@@ -51,8 +55,9 @@ else:
     
     git_pull_output = subprocess.Popen("git pull", shell=True,stdout=subprocess.PIPE).stdout.read()
     print("git pull:\n"+git_pull_output)
-    run_once_file_output = subprocess.Popen('python run_run_once_files.py', shell=True,stdout=subprocess.PIPE).stdout.read()
-    print("run_run_once_files output:\n"+run_once_file_output)
+    if ENABLE_RUN_ONCE:
+        run_once_file_output = subprocess.Popen('python run_run_once_files.py', shell=True,stdout=subprocess.PIPE).stdout.read()
+        print("run_run_once_files output:\n"+run_once_file_output)
     
     list_of_current_services = get_services_in_local_folder(list_of_current_services)
     list_of_services = list_of_extra_services + list_of_current_services
