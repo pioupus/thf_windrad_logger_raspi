@@ -24,7 +24,7 @@ subprocess.Popen("git fetch", shell=True,stdout=subprocess.PIPE).stdout.read()
 git_commits_newer_than_local = subprocess.Popen("git log HEAD..origin/master", shell=True,stdout=subprocess.PIPE).stdout.read()
 print(git_commits_newer_than_local)
 
-git_commits_newer_than_local = "test"
+#git_commits_newer_than_local = "test"
 if git_commits_newer_than_local == "":
     print("no new commit")
 else:
