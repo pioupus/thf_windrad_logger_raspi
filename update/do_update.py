@@ -30,7 +30,7 @@ print(git_commits_newer_than_local)
 
 #git_commits_newer_than_local = "test"
 if git_commits_newer_than_local == "":
-    print("no new commit")
+    print("no new commit ("+str(datetime.datetime.now())+")")
 else:
     
     print("there are new commits")
