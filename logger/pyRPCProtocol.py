@@ -206,6 +206,7 @@ my_IP_address = s.getsockname()[0]
 s.close()
 
 arguments_sys_stat = {}
+arguments_sys_stat["arguments"] = {}
 arguments_sys_stat["arguments"]["count_of_screens"] = 1
 arguments_sys_stat["arguments"]["row"] = 1
 arguments_sys_stat["arguments"]["text_in"] = "IP: "+str(my_IP_address)
