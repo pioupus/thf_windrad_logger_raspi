@@ -6,6 +6,7 @@ import os
 import json
 from datetime import datetime
 
+import socket
 
 
 class RPCProtocol:
@@ -199,6 +200,17 @@ print("JSON Bridge git: "+str(proto.get_version()["git_hash"]))
 result = proto.call("get_adc_values",arguments_get_adc_values)
 print("rpc_result: "+str(result))
 
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.connect(("8.8.8.8", 80))
+my_IP_address = s.getsockname()[0]
+s.close()
+
+arguments_sys_stat = {}
+arguments_sys_stat["arguments"]["count_of_screens"] = 1
+arguments_sys_stat["arguments"]["row"] = 1
+arguments_sys_stat["arguments"]["text_in"] = "IP: "+str(my_IP_address)
+        
+result = proto.call("display_set_sysstat_screen",arguments_sys_stat)
 
 #time.sleep(1)
 arguments_get_adc_values = {}
@@ -215,24 +227,87 @@ while 1:
     duration = (time.clock() - start_time)*1000
     print("duration[ms]: "+str(duration))
  
+    #int16_t current_l1_avg;
+    #int16_t current_l2_avg;
+    #int16_t current_l3_avg;
 
+    #uint16_t current_l1_eff;
+    #uint16_t current_l2_eff;
+    #uint16_t current_l3_eff;
+
+    #int16_t current_l1_max;
+    #int16_t current_l2_max;
+    #int16_t current_l3_max;
+
+    #int16_t voltage_l21_avg;
+    #int16_t voltage_l32_avg;
+    #int16_t voltage_l13_avg;
+
+    #uint16_t voltage_l21_eff;
+    #uint16_t voltage_l32_eff;
+    #uint16_t voltage_l13_eff;
+
+    #uint16_t voltage_l21_max;
+    #uint16_t voltage_l32_max;
+    #uint16_t voltage_l13_max;
+
+    #uint16_t temperature_l1;
+    #uint16_t temperature_l2;
+    #uint16_t temperature_l3;
+
+    #int16_t voltage_aux;
+
+    #uint16_t frequency_Hz;
+    #uint16_t power;
+
+    #uint16_t external_current_sensor;
+    #uint16_t supply_voltage;
+
+    #int8_t cpu_temperature;
+    #uint16_t coin_cell_mv;
+    
     json_body =     [{
         "measurement": "example_dataset",
         "time": datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f'),
         "fields": {
-            "current_l1":  float(result["arguments"]["current_l1_avg"]),
-            "current_l2":  float(result["arguments"]["current_l2_avg"]),
-            "current_l3":  float(result["arguments"]["current_l3_avg"]),
+            "current_l1_avg":  float(result["arguments"]["current_l1_avg"]),
+            "current_l2_avg":  float(result["arguments"]["current_l2_avg"]),
+            "current_l3_avg":  float(result["arguments"]["current_l3_avg"]),
             
-            "voltage_l12":  float(result["arguments"]["voltage_l12_avg"]),
-            "voltage_l23":  float(result["arguments"]["voltage_l23_avg"]),
-            "voltage_l31":  float(result["arguments"]["voltage_l31_avg"]),
+            "voltage_l21_avg":  float(result["arguments"]["voltage_l21_avg"]),
+            "voltage_l32_avg":  float(result["arguments"]["voltage_l32_avg"]),
+            "voltage_l13_avg":  float(result["arguments"]["voltage_l13_avg"]),
             
-            "voltage_temperature_l1":  float(result["arguments"]["temperature_l1"]),
-            "voltage_temperature_l2":  float(result["arguments"]["temperature_l2"]),
-            "voltage_temperature_l3":  float(result["arguments"]["temperature_l3"]),
+            "current_l1_eff":  float(result["arguments"]["current_l1_eff"]),
+            "current_l2_eff":  float(result["arguments"]["current_l2_eff"]),
+            "current_l3_eff":  float(result["arguments"]["current_l3_eff"]),
             
-            "voltage_aux":  float(result["arguments"]["voltage_aux"])
+            "voltage_l21_eff":  float(result["arguments"]["voltage_l21_eff"]),
+            "voltage_l32_eff":  float(result["arguments"]["voltage_l32_eff"]),
+            "voltage_l13_eff":  float(result["arguments"]["voltage_l13_eff"]),
+
+            "current_l1_max":  float(result["arguments"]["current_l1_max"]),
+            "current_l2_max":  float(result["arguments"]["current_l2_max"]),
+            "current_l3_max":  float(result["arguments"]["current_l3_max"]),
+            
+            "voltage_l21_max":  float(result["arguments"]["voltage_l21_max"]),
+            "voltage_l32_max":  float(result["arguments"]["voltage_l32_max"]),
+            "voltage_l13_max":  float(result["arguments"]["voltage_l13_max"]),
+            
+            "temperature_l1":  float(result["arguments"]["temperature_l1"]),
+            "temperature_l2":  float(result["arguments"]["temperature_l2"]),
+            "temperature_l3":  float(result["arguments"]["temperature_l3"]),
+            
+            "voltage_aux":  float(result["arguments"]["voltage_aux"]),
+            
+            "frequency_Hz":  float(result["arguments"]["frequency_Hz"]),
+            "power":  float(result["arguments"]["power"]),
+            "external_current_sensor":  float(result["arguments"]["external_current_sensor"]),
+            
+            "supply_voltage":  float(result["arguments"]["supply_voltage"]),
+            "cpu_temperature":  float(result["arguments"]["cpu_temperature"])
+            "coin_cell_mv":  float(result["arguments"]["coin_cell_mv"])            
+            
         }
     }]
         
