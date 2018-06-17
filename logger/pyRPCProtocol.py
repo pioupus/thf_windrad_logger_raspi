@@ -305,7 +305,7 @@ while 1:
             "external_current_sensor":  float(result["arguments"]["external_current_sensor"]),
             
             "supply_voltage":  float(result["arguments"]["supply_voltage"]),
-            "cpu_temperature":  float(result["arguments"]["cpu_temperature"])
+            "cpu_temperature":  float(result["arguments"]["cpu_temperature"]),
             "coin_cell_mv":  float(result["arguments"]["coin_cell_mv"])            
             
         }
