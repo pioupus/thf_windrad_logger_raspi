@@ -218,8 +218,8 @@ arguments_get_adc_values = {}
 result = proto.call("get_device_descriptor",arguments_get_adc_values)
 print("rpc_result: "+str(result))
 
-
-client = InfluxDBClient('localhost', 8086, 'root', 'root', 'thf_logger')
+my_env = os.environ.copy()    
+client = InfluxDBClient('localhost', 8086, 'influx_user', my_env["INFLUX_USER_PASSWORD"], 'enerlyzer_logger')
 
 while 1:
     test_function_param = {"channel":3}

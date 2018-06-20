@@ -7,6 +7,7 @@
 
 ```
 export MY_PASSWORD=xxx
+export INFLUX_USER_PASSWORD=yyy
 ```
 to ~/.bashrc where xxx is your ssh sudo password
 
