@@ -206,10 +206,9 @@ my_IP_address = s.getsockname()[0]
 s.close()
 
 arguments_sys_stat = {}
-arguments_sys_stat["arguments"] = {}
-arguments_sys_stat["arguments"]["count_of_screens"] = 1
-arguments_sys_stat["arguments"]["row"] = 1
-arguments_sys_stat["arguments"]["text_in"] = "IP: "+str(my_IP_address)
+arguments_sys_stat["count_of_screens"] = 1
+arguments_sys_stat["row"] = 1
+arguments_sys_stat["text_in"] = "IP: "+str(my_IP_address)
         
 result = proto.call("display_set_sysstat_screen",arguments_sys_stat)
 
