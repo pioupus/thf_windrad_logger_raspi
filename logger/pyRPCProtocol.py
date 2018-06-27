@@ -208,6 +208,7 @@ s.close()
 arguments_sys_stat = {}
 arguments_sys_stat["count_of_screens"] = 1
 arguments_sys_stat["row"] = 1
+arguments_sys_stat["screen_index"] = 0
 arguments_sys_stat["text_in"] = "IP: "+str(my_IP_address)
         
 result = proto.call("display_set_sysstat_screen",arguments_sys_stat)
