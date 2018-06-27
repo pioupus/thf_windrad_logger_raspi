@@ -8,7 +8,7 @@ from datetime import datetime
 
 import socket
 
-def string_to_ord(text)
+def string_to_ord(text):
     result = []
     for char in text:
         result.append(ord(char))
