@@ -12,6 +12,7 @@ def string_to_ord(text):
     result = []
     for char in text:
         result.append(ord(char))
+    return result
 
 class RPCProtocol:
     def __init__(self, comport_path, baud, xml_search_dir):
