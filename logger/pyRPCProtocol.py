@@ -241,7 +241,7 @@ while 1:
         "measurement": "powerdata",
         "time": datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f'),
         "fields": {
-            "logger_time":      logger_unix_time;
+            "logger_time":      logger_unix_time,
             "current_l1_avg":  float(result["arguments"]["current_l1_avg"]),
             "current_l2_avg":  float(result["arguments"]["current_l2_avg"]),
             "current_l3_avg":  float(result["arguments"]["current_l3_avg"]),
