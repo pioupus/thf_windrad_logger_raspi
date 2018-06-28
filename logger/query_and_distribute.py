@@ -39,7 +39,7 @@ while 1:
                 print(data_set_b)
             else:    
                 last_time_stamp = data_set_b['logger_time']
-                try:
+              #  try:
                     topics = [];
                     for key in data_set_b:
                         topic = ("enerlyzer/pwr/"+key, data_set_b[key])                      
@@ -47,10 +47,10 @@ while 1:
             
                     print("publish: "+str(topics))
                     mqtt_client.publish(topics, qos=1)
-                except:
-                    with open(LAST_TIME_STAMP_FN, 'w') as last_time_stamp_file:
-                        last_time_stamp_file.write(str(last_time_stamp_old))
-                    sys.exit(1)
+               # except:
+               #     with open(LAST_TIME_STAMP_FN, 'w') as last_time_stamp_file:
+                #        last_time_stamp_file.write(str(last_time_stamp_old))
+               #     sys.exit(1)
                 last_time_stamp_old = last_time_stamp;
         
         
