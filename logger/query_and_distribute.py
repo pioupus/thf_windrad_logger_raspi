@@ -7,6 +7,10 @@ import time
 from datetime import datetime
 
 
+import paho.mqtt.publish as publish
+
+
+
 my_env = os.environ.copy()    
 client = InfluxDBClient('localhost', 8086, 'influx_user', my_env["INFLUX_USER_PASSWORD"], 'enerlyzer')
 
@@ -29,6 +33,7 @@ while 1:
                 print(data_set_b)
             else:    
                 last_time_stamp = data_set_b['logger_time']
+                publish.single("enerlyzer/pwr/coin_mv", data_set_b["coin_cell_mv"], hostname="iot.eclipse.org")
             
     with open(LAST_TIME_STAMP_FN, 'w') as last_time_stamp_file:
         last_time_stamp_file.write(str(last_time_stamp))
