@@ -17,12 +17,18 @@ if os.path.isfile(LAST_TIME_STAMP_FN):
         last_time_stamp = float(last_time_stamp_file.readlines()[0].strip())
         
 while 1:
-    logger_data = client.query("SELECT * FROM powerdata WHERE logger_time > "+str(last_time_stamp))
+    QUERY="SELECT * FROM powerdata WHERE logger_time > "+str(last_time_stamp)
+    print(QUERY)
+    logger_data = client.query(QUERY)
     for data_set_a in logger_data: 
         #print(data_set)
         for data_set_b in data_set_a: 
-            print(data_set_b['logger_time'])
-            last_time_stamp = data_set_b['logger_time']
+            lt=data_set_b['logger_time']
+            print(lt)
+            if lt == None:
+                print(data_set_b)
+            else:    
+                last_time_stamp = data_set_b['logger_time']
             
     with open(LAST_TIME_STAMP_FN, 'w') as last_time_stamp_file:
         last_time_stamp_file.write(str(last_time_stamp))
