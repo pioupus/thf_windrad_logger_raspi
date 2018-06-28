@@ -216,9 +216,11 @@ arguments_sys_stat["row"] = 0
 arguments_sys_stat["screen_index"] = 0
 arguments_sys_stat["text_in"] = string_to_ord("IP: "+str(my_IP_address))
 
-        
-result = proto.call("display_set_sysstat_screen",arguments_sys_stat)
-
+while 1:
+    result = proto.call("display_set_sysstat_screen",arguments_sys_stat)
+    print(result)
+    time.sleep(0.5)
+    
 #time.sleep(1)
 arguments_get_adc_values = {}
 result = proto.call("get_device_descriptor",arguments_get_adc_values)
