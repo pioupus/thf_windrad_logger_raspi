@@ -4,6 +4,7 @@ from influxdb import InfluxDBClient
 import os
 import json
 import time
+import sys
 from datetime import datetime
 
 
@@ -20,8 +21,13 @@ if os.path.isfile(LAST_TIME_STAMP_FN):
     with open(LAST_TIME_STAMP_FN, 'r') as last_time_stamp_file:
         last_time_stamp = float(last_time_stamp_file.readlines()[0].strip())
         
+broker="broker.hivemq.com"
+client= paho.Client("client-001") 
+client.connect(broker)
+
 while 1:
     QUERY="SELECT * FROM powerdata WHERE logger_time > "+str(last_time_stamp)
+    last_time_stamp_old = last_time_stamp;
     print(QUERY)
     logger_data = client.query(QUERY)
     for data_set_a in logger_data: 
@@ -33,8 +39,15 @@ while 1:
                 print(data_set_b)
             else:    
                 last_time_stamp = data_set_b['logger_time']
-                publish.single("enerlyzer/pwr/coin_mv", data_set_b["coin_cell_mv"], hostname="broker.hivemq.com")
-            
+                try:
+                    client.publish("enerlyzer/pwr/coin_mv", data_set_b["coin_cell_mv"], qos=2)
+                except:
+                    with open(LAST_TIME_STAMP_FN, 'w') as last_time_stamp_file:
+                        last_time_stamp_file.write(str(last_time_stamp_old))
+                    sys.exit(1)
+                last_time_stamp_old = last_time_stamp;
+        
+        
     with open(LAST_TIME_STAMP_FN, 'w') as last_time_stamp_file:
         last_time_stamp_file.write(str(last_time_stamp))
     time.sleep(0.5)
