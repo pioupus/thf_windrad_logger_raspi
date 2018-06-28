@@ -42,7 +42,7 @@ while 1:
                 try:
                     topics = [];
                     for key in data_set_b:
-                        topic = ("enerlyzer/pwr/"+key, data_set_b[key]                           
+                        topic = ("enerlyzer/pwr/"+key, data_set_b[key])                      
                         topics.append(topic)
             
                     print("publish: "+str(topics))
