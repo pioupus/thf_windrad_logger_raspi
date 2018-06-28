@@ -8,10 +8,12 @@ from datetime import datetime
 
 import socket
 
-def string_to_ord(text):
+def string_to_ord(text,length):
     result = []
     for char in text:
         result.append(ord(char))
+    for i in range(len(result),length):
+        result.append(0)
     return result
 
 class RPCProtocol:
@@ -214,7 +216,7 @@ arguments_sys_stat = {}
 arguments_sys_stat["count_of_screens"] = 1
 arguments_sys_stat["row"] = 0
 arguments_sys_stat["screen_index"] = 0
-arguments_sys_stat["text_in"] = string_to_ord("IP: "+str(my_IP_address))
+arguments_sys_stat["text_in"] = string_to_ord("IP: "+str(my_IP_address),20)
 
 while 1:
     result = proto.call("display_set_sysstat_screen",arguments_sys_stat)
