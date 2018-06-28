@@ -25,11 +25,13 @@ broker="broker.hivemq.com"
 mqtt_client= mqtt.Client("client-001") 
 mqtt_client.connect(broker)
 
+sequence_number=0
 while 1:
     QUERY="SELECT * FROM powerdata WHERE logger_time > "+str(last_time_stamp)
     last_time_stamp_old = last_time_stamp;
     print(QUERY)
     logger_data = client.query(QUERY)
+    
     for data_set_a in logger_data: 
         #print(data_set)
         for data_set_b in data_set_a: 
@@ -41,9 +43,10 @@ while 1:
                 last_time_stamp = data_set_b['logger_time']
               #  try:
                 for key in data_set_b:
-                    print("publish: "+"enerlyzer/pwr/"+key+", "+str(data_set_b[key]))
-                    mqtt_client.publish("enerlyzer/pwr/"+key, data_set_b[key], qos=1)
+                    print("publish: "+"enerlyzer/pwr/"+key+"/"+str(sequence_number)+", "+str(data_set_b[key]))
+                    mqtt_client.publish("enerlyzer/pwr/"+key+"/"+str(sequence_number), data_set_b[key], qos=1)
                 mqtt_client.loop(timeout=1.0)
+                sequence_number = sequence_number+1;
         
 
                 
