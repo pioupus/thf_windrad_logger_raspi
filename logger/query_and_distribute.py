@@ -40,13 +40,13 @@ while 1:
             else:    
                 last_time_stamp = data_set_b['logger_time']
               #  try:
-                    topics = [];
-                    for key in data_set_b:
-                        topic = ("enerlyzer/pwr/"+key, data_set_b[key])                      
-                        topics.append(topic)
-            
-                    print("publish: "+str(topics))
-                    mqtt_client.publish(topics, qos=1)
+                topics = [];
+                for key in data_set_b:
+                    topic = ("enerlyzer/pwr/"+key, data_set_b[key])                      
+                    topics.append(topic)
+        
+                print("publish: "+str(topics))
+                mqtt_client.publish(topics, qos=1)
                # except:
                #     with open(LAST_TIME_STAMP_FN, 'w') as last_time_stamp_file:
                 #        last_time_stamp_file.write(str(last_time_stamp_old))
