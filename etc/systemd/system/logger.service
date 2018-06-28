@@ -3,6 +3,7 @@ Description=logger service
 After=network.target
 
 [Service]
+EnvironmentFile=/home/pi/logger.env
 ExecStart=/home/pi/thf_windrad_logger_raspi/logger/start_service_pi.sh
 WorkingDirectory=/home/pi/thf_windrad_logger_raspi/logger/
 StandardOutput=inherit

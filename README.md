@@ -3,13 +3,20 @@
 - add the line 'enable_uart=1' to /boot/config.txt
 - delete 'console=serial0,115200' from cmdline.txt
 - put the file 'ssh' in the /boot/ directory for enabling ssh
-- add the line
+- write the lines
+```
+MY_PASSWORD=xxx
+INFLUX_USER_PASSWORD=yyy
+```
 
+to ~/logger.env where xxx is your ssh sudo password
+
+- add the line 
 ```
-export MY_PASSWORD=xxx
-export INFLUX_USER_PASSWORD=yyy
+set -a; source /home/pi/logger.env; set +a
 ```
-to ~/.bashrc where xxx is your ssh sudo password
+
+to ~/bashrc
 
 - run sudo apt-get update
 - install git using sudo apt-get install git

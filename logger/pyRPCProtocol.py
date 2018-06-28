@@ -212,7 +212,7 @@ s.close()
 
 arguments_sys_stat = {}
 arguments_sys_stat["count_of_screens"] = 1
-arguments_sys_stat["row"] = 1
+arguments_sys_stat["row"] = 0
 arguments_sys_stat["screen_index"] = 0
 arguments_sys_stat["text_in"] = string_to_ord("IP: "+str(my_IP_address))
 
@@ -233,50 +233,15 @@ while 1:
     result = proto.call("get_power_sensor_data",{})
     duration = (time.clock() - start_time)*1000
     print("duration[ms]: "+str(duration))
- 
-    #int16_t current_l1_avg;
-    #int16_t current_l2_avg;
-    #int16_t current_l3_avg;
 
-    #uint16_t current_l1_eff;
-    #uint16_t current_l2_eff;
-    #uint16_t current_l3_eff;
-
-    #int16_t current_l1_max;
-    #int16_t current_l2_max;
-    #int16_t current_l3_max;
-
-    #int16_t voltage_l21_avg;
-    #int16_t voltage_l32_avg;
-    #int16_t voltage_l13_avg;
-
-    #uint16_t voltage_l21_eff;
-    #uint16_t voltage_l32_eff;
-    #uint16_t voltage_l13_eff;
-
-    #uint16_t voltage_l21_max;
-    #uint16_t voltage_l32_max;
-    #uint16_t voltage_l13_max;
-
-    #uint16_t temperature_l1;
-    #uint16_t temperature_l2;
-    #uint16_t temperature_l3;
-
-    #int16_t voltage_aux;
-
-    #uint16_t frequency_Hz;
-    #uint16_t power;
-
-    #uint16_t external_current_sensor;
-    #uint16_t supply_voltage;
-
-    #int8_t cpu_temperature;
-    #uint16_t coin_cell_mv;
+    logger_unix_time = float(result["arguments"]["unix_time"])
+    logger_unix_time = logger_unix_time + float(result["arguments"]["sub_seconds"])/256.0
     
     json_body =     [{
-        "measurement": "example_dataset",
+        "measurement": "powerdata",
         "time": datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f'),
         "fields": {
+            "logger_time":      logger_unix_time;
             "current_l1_avg":  float(result["arguments"]["current_l1_avg"]),
             "current_l2_avg":  float(result["arguments"]["current_l2_avg"]),
             "current_l3_avg":  float(result["arguments"]["current_l3_avg"]),
