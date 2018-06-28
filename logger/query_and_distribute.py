@@ -8,8 +8,8 @@ import sys
 from datetime import datetime
 
 
-import paho.mqtt.publish as publish
 
+import paho.mqtt.client as mqtt
 
 
 my_env = os.environ.copy()    
@@ -22,8 +22,8 @@ if os.path.isfile(LAST_TIME_STAMP_FN):
         last_time_stamp = float(last_time_stamp_file.readlines()[0].strip())
         
 broker="broker.hivemq.com"
-client= paho.Client("client-001") 
-client.connect(broker)
+mqtt_client= mqtt.Client("client-001") 
+mqtt_client.connect(broker)
 
 while 1:
     QUERY="SELECT * FROM powerdata WHERE logger_time > "+str(last_time_stamp)
@@ -40,7 +40,7 @@ while 1:
             else:    
                 last_time_stamp = data_set_b['logger_time']
                 try:
-                    client.publish("enerlyzer/pwr/coin_mv", data_set_b["coin_cell_mv"], qos=2)
+                    mqtt_client.publish("enerlyzer/pwr/coin_mv", data_set_b["coin_cell_mv"], qos=2)
                 except:
                     with open(LAST_TIME_STAMP_FN, 'w') as last_time_stamp_file:
                         last_time_stamp_file.write(str(last_time_stamp_old))
