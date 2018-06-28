@@ -12,8 +12,9 @@ client = InfluxDBClient('localhost', 8086, 'influx_user', my_env["INFLUX_USER_PA
 
 LAST_TIME_STAMP_FN = "last_time_stamp.txt"
 last_time_stamp = 0.0;
-with open(LAST_TIME_STAMP_FN, 'r') as last_time_stamp_file:
-    last_time_stamp = float(last_time_stamp_file.readlines()[0].strip())
+if os.path.isfile(fname):
+    with open(LAST_TIME_STAMP_FN, 'r') as last_time_stamp_file:
+        last_time_stamp = float(last_time_stamp_file.readlines()[0].strip())
         
 while 1:
     logger_data = client.query("SELECT * FROM powerdata WHERE logger_time > "+str(last_time_stamp))
