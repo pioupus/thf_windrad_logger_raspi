@@ -33,7 +33,7 @@ while 1:
                 print(data_set_b)
             else:    
                 last_time_stamp = data_set_b['logger_time']
-                publish.single("enerlyzer/pwr/coin_mv", data_set_b["coin_cell_mv"], hostname="iot.eclipse.org")
+                publish.single("enerlyzer/pwr/coin_mv", data_set_b["coin_cell_mv"], hostname="broker.hivemq.com")
             
     with open(LAST_TIME_STAMP_FN, 'w') as last_time_stamp_file:
         last_time_stamp_file.write(str(last_time_stamp))
