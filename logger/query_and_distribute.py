@@ -19,7 +19,7 @@ if os.path.isfile(LAST_TIME_STAMP_FN):
 while 1:
     logger_data = client.query("SELECT * FROM powerdata WHERE logger_time > "+str(last_time_stamp))
     for data_set in logger_data: 
-        print(logger_data)
+        print(data_set)
         last_time_stamp = data_set['logger_time']
     with open(LAST_TIME_STAMP_FN, 'w') as last_time_stamp_file:
         last_time_stamp_file.write(str(last_time_stamp))
