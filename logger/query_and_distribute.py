@@ -44,7 +44,7 @@ while 1:
               #  try:
                 for key in data_set_b:
                     print("publish: "+"enerlyzer/pwr/"+key+"/"+str(sequence_number)+", "+str(data_set_b[key]))
-                    mqtt_client.publish("enerlyzer/pwr/"+key+"/"+str(sequence_number), data_set_b[key], qos=1)
+                    mqtt_client.publish("enerlyzer/pwr/"+key+"/"+str(sequence_number), data_set_b[key], qos=2)
                 mqtt_client.loop(timeout=1.0)
                 sequence_number = sequence_number+1;
         
