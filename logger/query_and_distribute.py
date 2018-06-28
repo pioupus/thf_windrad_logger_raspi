@@ -12,7 +12,7 @@ client = InfluxDBClient('localhost', 8086, 'influx_user', my_env["INFLUX_USER_PA
 
 LAST_TIME_STAMP_FN = "last_time_stamp.txt"
 last_time_stamp = 0.0;
-if os.path.isfile(fname):
+if os.path.isfile(LAST_TIME_STAMP_FN):
     with open(LAST_TIME_STAMP_FN, 'r') as last_time_stamp_file:
         last_time_stamp = float(last_time_stamp_file.readlines()[0].strip())
         
