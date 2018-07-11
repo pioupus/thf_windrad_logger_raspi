@@ -272,6 +272,7 @@ while 1:
         result["arguments"]["cpu_temperature"] = random.random()
         result["arguments"]["coin_cell_mv"] = random.random()
         result["arguments"]["unix_time"] = round(time.time())
+        result["arguments"]["sub_seconds"] = 0
 
     else:
         result = proto.call("get_power_sensor_data",{})
