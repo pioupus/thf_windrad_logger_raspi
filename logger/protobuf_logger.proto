@@ -1,0 +1,35 @@
+syntax = "proto2";
+
+package enerlyzer;
+
+message dataset {
+    required uint32 logger_time                 =  29;
+    required int32 current_l1_avg              =  1;
+    required int32 current_l2_avg              =  2;
+    required int32 current_l3_avg              =  3;
+    required int32 voltage_l21_avg             =  4;
+    required int32 voltage_l32_avg             =  5;
+    required int32 voltage_l13_avg             =  6;
+    required uint32 current_l1_eff              =  7;
+    required uint32 current_l2_eff              =  8;
+    required uint32 current_l3_eff              =  9;
+    required uint32 voltage_l21_eff             =  10;
+    required uint32 voltage_l32_eff             =  11;
+    required uint32 voltage_l13_eff             =  12;
+    required int32 current_l1_max              =  13;
+    required int32 current_l2_max              =  14;
+    required int32 current_l3_max              =  15;
+    required int32 voltage_l21_max             =  16;
+    required int32 voltage_l32_max             =  17;
+    required int32 voltage_l13_max             =  18;
+    required int32 temperature_l1              =  19;
+    required int32 temperature_l2              =  20;
+    required int32 temperature_l3              =  21;
+    required int32 voltage_aux                 =  22;
+    required int32 frequency_Hz                =  23;
+    required int32 power                       =  24;
+    required int32 external_current_sensor     =  25;
+    required int32 supply_voltage              =  26;
+    required int32 cpu_temperature             =  27;
+    required int32 coin_cell_mv                =  28;
+}

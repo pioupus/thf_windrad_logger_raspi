@@ -6,7 +6,7 @@ import json
 import time
 import sys
 from datetime import datetime
-
+import protobuf_logger_pb2
 
 
 import paho.mqtt.client as mqtt
@@ -42,11 +42,50 @@ while 1:
             else:    
                 last_time_stamp = data_set_b['logger_time']
               #  try:
-                for key in data_set_b:
-                    #print("publish: "+"enerlyzer/pwr/"+key+"/"+str(sequence_number)+", "+str(data_set_b[key]))
-                    mqtt_client.publish("enerlyzer/pwr/"+key+"/"+str(sequence_number), data_set_b[key], qos=2)
+              
+
+                person = protobuf_logger_pb2.dataset()
+                person.logger_time =        data_set_b["logger_time"]
+                person.current_l1_avg = data_set_b["current_l1_avg"]
+                person.current_l2_avg = data_set_b["current_l2_avg"]
+                person.current_l3_avg = data_set_b["current_l3_avg"]
+                
+                person.voltage_l21_avg = data_set_b["voltage_l21_avg"]
+                person.voltage_l32_avg = data_set_b["voltage_l32_avg"]
+                person.voltage_l13_avg = data_set_b["voltage_l13_avg"]
+                
+                person.current_l1_eff = data_set_b["current_l1_eff"]
+                person.current_l2_eff = data_set_b["current_l2_eff"]
+                person.current_l3_eff = data_set_b["current_l3_eff"]
+
+                person.voltage_l21_eff = data_set_b["voltage_l21_eff"]
+                person.voltage_l32_eff = data_set_b["voltage_l32_eff"]
+                person.voltage_l13_eff = data_set_b["voltage_l13_eff"]
+                
+                person.current_l1_max = data_set_b["current_l1_max"]
+                person.current_l2_max = data_set_b["current_l2_max"]
+                person.current_l3_max = data_set_b["current_l3_max"]
+                
+                person.voltage_l21_max = data_set_b["voltage_l21_max"]
+                person.voltage_l32_max = data_set_b["voltage_l32_max"]
+                person.voltage_l13_max = data_set_b["voltage_l13_max"]
+
+                person.temperature_l1 = data_set_b["temperature_l1"]
+                person.temperature_l2 = data_set_b["temperature_l2"]
+                person.temperature_l3 = data_set_b["temperature_l3"]
+                
+                person.voltage_aux = data_set_b["voltage_aux"]
+                person.frequency_Hz = data_set_b["frequency_Hz"]
+                person.power = data_set_b["power"]
+                
+                person.external_current_sensor = data_set_b["external_current_sensor"]
+                person.supply_voltage = data_set_b["supply_voltage"]
+                person.cpu_temperature = data_set_b["cpu_temperature"]
+                person.coin_cell_mv = data_set_b["coin_cell_mv"]
+                
+
+                mqtt_client.publish("enerlyzer/pwr/", data_set.SerializeToString(), qos=2)
                 mqtt_client.loop(timeout=1.0)
-                sequence_number = sequence_number+1;
         
 
                 
