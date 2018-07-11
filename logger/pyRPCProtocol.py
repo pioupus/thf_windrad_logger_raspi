@@ -5,7 +5,7 @@ import time
 import os
 import json
 from datetime import datetime
-
+import random
 import socket
 
 def string_to_ord(text,length):
@@ -197,32 +197,34 @@ print("using THF_LOGGER_SERIAL "+my_env["THF_LOGGER_SERIAL"])
 print("using THF_LOGGER_BAUD "+my_env["THF_LOGGER_BAUD"])  
 print("using THF_LOGGER_RPC_XML "+my_env["THF_LOGGER_RPC_XML"])  
 
-proto = RPCProtocol(my_env["THF_LOGGER_SERIAL"],my_env["THF_LOGGER_BAUD"],my_env["THF_LOGGER_RPC_XML"])
+SIMULATE_RPC = 1
+if not SIMULATE_RPC:
+    proto = RPCProtocol(my_env["THF_LOGGER_SERIAL"],my_env["THF_LOGGER_BAUD"],my_env["THF_LOGGER_RPC_XML"])
 
-#time.sleep(0.1)
-arguments_get_adc_values = {}
-print("hash: "+proto.get_server_hash())
-print("JSON Bridge git: "+str(proto.get_version()["git_hash"]))
+    #time.sleep(0.1)
+    arguments_get_adc_values = {}
+    print("hash: "+proto.get_server_hash())
+    print("JSON Bridge git: "+str(proto.get_version()["git_hash"]))
 
-result = proto.call("get_adc_values",arguments_get_adc_values)
-print("rpc_result: "+str(result))
+    result = proto.call("get_adc_values",arguments_get_adc_values)
+    print("rpc_result: "+str(result))
 
-s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-s.connect(("8.8.8.8", 80))
-my_IP_address = s.getsockname()[0]
-s.close()
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    my_IP_address = s.getsockname()[0]
+    s.close()
 
-arguments_sys_stat = {}
-arguments_sys_stat["count_of_screens"] = 1
-arguments_sys_stat["row"] = 0
-arguments_sys_stat["screen_index"] = 0
-arguments_sys_stat["text_in"] = string_to_ord("IP: "+str(my_IP_address),20)
+    arguments_sys_stat = {}
+    arguments_sys_stat["count_of_screens"] = 1
+    arguments_sys_stat["row"] = 0
+    arguments_sys_stat["screen_index"] = 0
+    arguments_sys_stat["text_in"] = string_to_ord("IP: "+str(my_IP_address),20)
 
-result = proto.call("display_set_sysstat_screen",arguments_sys_stat)
-#time.sleep(1)
-arguments_get_adc_values = {}
-result = proto.call("get_device_descriptor",arguments_get_adc_values)
-print("rpc_result: "+str(result))
+    result = proto.call("display_set_sysstat_screen",arguments_sys_stat)
+    #time.sleep(1)
+    arguments_get_adc_values = {}
+    result = proto.call("get_device_descriptor",arguments_get_adc_values)
+    print("rpc_result: "+str(result))
 
 my_env = os.environ.copy()    
 client = InfluxDBClient('localhost', 8086, 'influx_user', my_env["INFLUX_USER_PASSWORD"], 'enerlyzer')
@@ -230,7 +232,50 @@ client = InfluxDBClient('localhost', 8086, 'influx_user', my_env["INFLUX_USER_PA
 while 1:
     test_function_param = {"channel":3}
     start_time = time.clock()
-    result = proto.call("get_power_sensor_data",{})
+    if SIMULATE_RPC:
+        result = {}
+        result["arguments"] = {}
+        result["arguments"]["current_l1_avg"] = random.random()
+        result["arguments"]["current_l2_avg"] = random.random()
+        result["arguments"]["current_l3_avg"] = random.random()
+        
+        result["arguments"]["voltage_l21_avg"] = random.random()
+        result["arguments"]["voltage_l32_avg"] = random.random()
+        result["arguments"]["voltage_l13_avg"] = random.random()
+        
+        result["arguments"]["current_l1_eff"] = random.random()
+        result["arguments"]["current_l2_eff"] = random.random()
+        result["arguments"]["current_l3_eff"] = random.random()
+        
+        result["arguments"]["voltage_l21_eff"] = random.random()
+        result["arguments"]["voltage_l32_eff"] = random.random()
+        result["arguments"]["voltage_l13_eff"] = random.random()
+
+        result["arguments"]["current_l1_max"] = random.random()
+        result["arguments"]["current_l2_max"] = random.random()
+        result["arguments"]["current_l3_max"] = random.random()
+        
+        result["arguments"]["voltage_l21_max"] = random.random()
+        result["arguments"]["voltage_l32_max"] = random.random()
+        result["arguments"]["voltage_l13_max"] = random.random()
+        
+        result["arguments"]["temperature_l1"] = random.random()
+        result["arguments"]["temperature_l2"] = random.random()
+        result["arguments"]["temperature_l3"] = random.random()
+        
+        result["arguments"]["voltage_aux"] = random.random()
+        result["arguments"]["frequency_Hz"] = random.random()
+        result["arguments"]["power"] = random.random()
+        
+        result["arguments"]["external_current_sensor"] = random.random()
+        result["arguments"]["supply_voltage"] = random.random()
+        result["arguments"]["cpu_temperature"] = random.random()
+        result["arguments"]["coin_cell_mv"] = random.random()
+        result["arguments"]["unix_time"] = round(time.time())
+
+    else:
+        result = proto.call("get_power_sensor_data",{})
+        
     duration = (time.clock() - start_time)*1000
     print("duration[ms]: "+str(duration))
 

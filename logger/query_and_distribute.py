@@ -31,7 +31,7 @@ while 1:
     last_time_stamp_old = last_time_stamp;
     print(QUERY)
     logger_data = client.query(QUERY)
-    
+    print("influx")
     for data_set_a in logger_data: 
         #print(data_set)
         for data_set_b in data_set_a: 
