@@ -42,7 +42,8 @@ while 1:
     for data_set_b in data_sets:
         #print(data_set_b)
         print(type(data_set_b))
-        if data_set_b['logger_time'] == None:
+        if data_set_b['logger_time'] == None or data_set_b["current_l1_avg"] == None:
+            print(data_set_b)
             continue
         
         last_time_stamp = data_set_b['logger_time']
