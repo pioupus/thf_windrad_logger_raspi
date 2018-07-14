@@ -25,7 +25,7 @@ if last_time_stamp == 0:
     QUERY="SELECT max(logger_time) FROM powerdata"
     max_time_stamp = client.query(QUERY)
     last_time_stamp = list(max_time_stamp.get_points())[0]["max"]
-    print("starting with timestamp "+..str(last_time_stamp))
+    print("starting with timestamp "+str(last_time_stamp))
     
 broker="broker.hivemq.com"
 mqtt_client= mqtt.Client("client-001") 
