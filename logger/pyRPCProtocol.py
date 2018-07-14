@@ -286,12 +286,12 @@ while 1:
         result = proto.call("get_power_sensor_data",{})
         
     duration = (time.clock() - start_time)*1000
-    sys.stderr.write("duration[ms]: "+str(duration))
-    sys.stderr.write("unix_time "+str(result["arguments"]["unix_time"]))
-    sys.stderr.write("sub_seconds "+str(result["arguments"]["sub_seconds"]))
+    #sys.stderr.write("duration[ms]: "+str(duration))
+    #sys.stderr.write("unix_time "+str(result["arguments"]["unix_time"]))
+    #sys.stderr.write("sub_seconds "+str(result["arguments"]["sub_seconds"]))
     logger_unix_time = float(result["arguments"]["unix_time"])
     logger_unix_time = logger_unix_time + float(result["arguments"]["sub_seconds"])/256.0
-    sys.stderr.write("logger_unix_time "+str(logger_unix_time))
+    #sys.stderr.write("logger_unix_time "+str(logger_unix_time))
     
     json_body =     [{
         "measurement": "powerdata",
