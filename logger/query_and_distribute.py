@@ -81,7 +81,7 @@ while 1:
         person.frequency_Hz = data_set_b["frequency_Hz"]
         person.power = data_set_b["power"]
         
-        person.external_current_sensor = (data_set_b["external_current_sensor"]
+        person.external_current_sensor = data_set_b["external_current_sensor"]
         person.supply_voltage = data_set_b["supply_voltage"]
         person.cpu_temperature = data_set_b["cpu_temperature"]
         person.coin_cell_mv = data_set_b["coin_cell_mv"]
