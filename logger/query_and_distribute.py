@@ -48,7 +48,7 @@ while 1:
         
 
         person = protobuf_logger_pb2.dataset()
-        person.logger_time =        data_set_b["logger_time"]
+        person.logger_time =        int(round(data_set_b["logger_time"]*256))
         person.current_l1_avg = int(round(data_set_b["current_l1_avg"]*1000))
         person.current_l2_avg = int(round(data_set_b["current_l2_avg"]*1000))
         person.current_l3_avg = int(round(data_set_b["current_l3_avg"]*1000))
