@@ -4,6 +4,7 @@ from influxdb import InfluxDBClient
 import time
 import os
 import json
+import sys
 from datetime import datetime
 import random
 import socket
@@ -285,12 +286,12 @@ while 1:
         result = proto.call("get_power_sensor_data",{})
         
     duration = (time.clock() - start_time)*1000
-    print("duration[ms]: "+str(duration))
-    print("unix_time "+str(result["arguments"]["unix_time"]))
-    print("sub_seconds "+str(result["arguments"]["sub_seconds"]))
+    sys.stderr.write()("duration[ms]: "+str(duration))
+    sys.stderr.write()("unix_time "+str(result["arguments"]["unix_time"]))
+    sys.stderr.write()("sub_seconds "+str(result["arguments"]["sub_seconds"]))
     logger_unix_time = float(result["arguments"]["unix_time"])
     logger_unix_time = logger_unix_time + float(result["arguments"]["sub_seconds"])/256.0
-    print("logger_unix_time "+str(logger_unix_time))
+    sys.stderr.write()("logger_unix_time "+str(logger_unix_time))
     
     json_body =     [{
         "measurement": "powerdata",
