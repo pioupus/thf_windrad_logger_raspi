@@ -12,7 +12,7 @@ broker="broker.hivemq.com"
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
 
-    client.subscribe("enerlyzer/pwr/#")
+    client.subscribe("enerlyzer/#")
 
 def on_message(client, userdata, msg):
     print(msg.topic + " " + str(msg.payload))
