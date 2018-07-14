@@ -7,6 +7,8 @@ import json
 from datetime import datetime
 import random
 import socket
+import protobuf_logger_pb2
+import paho.mqtt.client as mqtt
 
 def string_to_ord(text,length):
     result = []
@@ -226,6 +228,10 @@ if not SIMULATE_RPC:
     result = proto.call("get_device_descriptor",arguments_get_adc_values)
     print("rpc_result: "+str(result))
 
+broker="broker.hivemq.com"
+mqtt_client= mqtt.Client("client-001") 
+mqtt_client.connect(broker)
+
 my_env = os.environ.copy()    
 client = InfluxDBClient('localhost', 8086, 'influx_user', my_env["INFLUX_USER_PASSWORD"], 'enerlyzer')
 
@@ -329,8 +335,49 @@ while 1:
         }
     }]
         
-
+    protobuf_dataset = protobuf_logger_pb2.dataset()
+    protobuf_dataset.logger_time =    json_body[0]["fields"]["logger_time"]
+    protobuf_dataset.current_l1_avg = json_body[0]["fields"]["current_l1_avg"]
+    protobuf_dataset.current_l2_avg = json_body[0]["fields"]["current_l2_avg"]
+    protobuf_dataset.current_l3_avg = json_body[0]["fields"]["current_l3_avg"]
     
+    protobuf_dataset.voltage_l21_avg = json_body[0]["fields"]["voltage_l21_avg"]
+    protobuf_dataset.voltage_l32_avg = json_body[0]["fields"]["voltage_l32_avg"]
+    protobuf_dataset.voltage_l13_avg = json_body[0]["fields"]["voltage_l13_avg"]
+    
+    protobuf_dataset.current_l1_eff = json_body[0]["fields"]["current_l1_eff"]
+    protobuf_dataset.current_l2_eff = json_body[0]["fields"]["current_l2_eff"]
+    protobuf_dataset.current_l3_eff = json_body[0]["fields"]["current_l3_eff"]
+
+    protobuf_dataset.voltage_l21_eff = json_body[0]["fields"]["voltage_l21_eff"]
+    protobuf_dataset.voltage_l32_eff = json_body[0]["fields"]["voltage_l32_eff"]
+    protobuf_dataset.voltage_l13_eff = json_body[0]["fields"]["voltage_l13_eff"]
+    
+    protobuf_dataset.current_l1_max = json_body[0]["fields"]["current_l1_max"]
+    protobuf_dataset.current_l2_max = json_body[0]["fields"]["current_l2_max"]
+    protobuf_dataset.current_l3_max = json_body[0]["fields"]["current_l3_max"]
+    
+    protobuf_dataset.voltage_l21_max = json_body[0]["fields"]["voltage_l21_max"]
+    protobuf_dataset.voltage_l32_max = json_body[0]["fields"]["voltage_l32_max"]
+    protobuf_dataset.voltage_l13_max = json_body[0]["fields"]["voltage_l13_max"]
+
+    protobuf_dataset.temperature_l1 = json_body[0]["fields"]["temperature_l1"]
+    protobuf_dataset.temperature_l2 = json_body[0]["fields"]["temperature_l2"]
+    protobuf_dataset.temperature_l3 = json_body[0]["fields"]["temperature_l3"]
+    
+    protobuf_dataset.voltage_aux = json_body[0]["fields"]["voltage_aux"]
+    protobuf_dataset.frequency_Hz = json_body[0]["fields"]["frequency_Hz"]
+    protobuf_dataset.power = json_body[0]["fields"]["power"]
+    
+    protobuf_dataset.external_current_sensor = json_body[0]["fields"]["external_current_sensor"]
+    protobuf_dataset.supply_voltage = json_body[0]["fields"]["supply_voltage"]
+    protobuf_dataset.cpu_temperature = json_body[0]["fields"]["cpu_temperature"]
+    protobuf_dataset.coin_cell_mv = json_body[0]["fields"]["coin_cell_mv"]
+    
+   
     client.write_points(json_body)
+    
+    mqtt_client.publish("enerlyzer/live/pwr", protobuf_dataset.SerializeToString(), qos=2)
+    mqtt_client.loop(timeout=1.0)    
     time.sleep(0.5)
 
