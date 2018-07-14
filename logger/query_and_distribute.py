@@ -42,7 +42,9 @@ while 1:
     for data_set_b in data_sets:
         #print(data_set_b)
         print(type(data_set_b))
-
+        if data_set_b['logger_time'] = None:
+            continue
+        
         last_time_stamp = data_set_b['logger_time']
         #  try:
         
