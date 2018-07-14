@@ -87,7 +87,7 @@ while 1:
         person.coin_cell_mv = int(data_set_b["coin_cell_mv"])
         
 
-        mqtt_client.publish("enerlyzer/pwr/", data_set.SerializeToString(), qos=2)
+        mqtt_client.publish("enerlyzer/pwr/", person.SerializeToString(), qos=2)
         mqtt_client.loop(timeout=1.0)
 
 
