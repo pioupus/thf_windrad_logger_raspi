@@ -38,9 +38,9 @@ while 1:
     print(QUERY)
     logger_data = client.query(QUERY)
     print("influx")
-    data_sets = list(max_time_stamp.get_points())
+    data_sets = list(logger_data.get_points())
     for data_set_b in data_sets:
-        print(data_set_b)
+        #print(data_set_b)
         print(type(data_set_b))
 
         last_time_stamp = data_set_b['logger_time']
