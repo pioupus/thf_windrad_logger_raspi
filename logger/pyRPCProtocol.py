@@ -199,7 +199,7 @@ print("using THF_LOGGER_SERIAL "+my_env["THF_LOGGER_SERIAL"])
 print("using THF_LOGGER_BAUD "+my_env["THF_LOGGER_BAUD"])  
 print("using THF_LOGGER_RPC_XML "+my_env["THF_LOGGER_RPC_XML"])  
 
-SIMULATE_RPC = 1
+SIMULATE_RPC = 0
 if not SIMULATE_RPC:
     proto = RPCProtocol(my_env["THF_LOGGER_SERIAL"],my_env["THF_LOGGER_BAUD"],my_env["THF_LOGGER_RPC_XML"])
 
