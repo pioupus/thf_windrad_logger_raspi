@@ -49,37 +49,37 @@ while 1:
 
         person = protobuf_logger_pb2.dataset()
         person.logger_time =        data_set_b["logger_time"]
-        person.current_l1_avg = data_set_b["current_l1_avg"]
-        person.current_l2_avg = data_set_b["current_l2_avg"]
-        person.current_l3_avg = data_set_b["current_l3_avg"]
+        person.current_l1_avg = round(data_set_b["current_l1_avg"]*1000)
+        person.current_l2_avg = round(data_set_b["current_l2_avg"]*1000)
+        person.current_l3_avg = round(data_set_b["current_l3_avg"]*1000)
         
-        person.voltage_l21_avg = data_set_b["voltage_l21_avg"]
-        person.voltage_l32_avg = data_set_b["voltage_l32_avg"]
-        person.voltage_l13_avg = data_set_b["voltage_l13_avg"]
+        person.voltage_l21_avg = round(data_set_b["voltage_l21_avg"]*1000)
+        person.voltage_l32_avg = round(data_set_b["voltage_l32_avg"]*1000)
+        person.voltage_l13_avg = round(data_set_b["voltage_l13_avg"]*1000)
         
-        person.current_l1_eff = data_set_b["current_l1_eff"]
-        person.current_l2_eff = data_set_b["current_l2_eff"]
-        person.current_l3_eff = data_set_b["current_l3_eff"]
+        person.current_l1_eff = round(data_set_b["current_l1_eff"]*1000)
+        person.current_l2_eff = round(data_set_b["current_l2_eff"]*1000)
+        person.current_l3_eff = round(data_set_b["current_l3_eff"]*1000)
 
-        person.voltage_l21_eff = data_set_b["voltage_l21_eff"]
-        person.voltage_l32_eff = data_set_b["voltage_l32_eff"]
-        person.voltage_l13_eff = data_set_b["voltage_l13_eff"]
+        person.voltage_l21_eff = round(data_set_b["voltage_l21_eff"]*1000)
+        person.voltage_l32_eff = round(data_set_b["voltage_l32_eff"]*1000)
+        person.voltage_l13_eff = round(data_set_b["voltage_l13_eff"]*1000)
         
-        person.current_l1_max = data_set_b["current_l1_max"]
-        person.current_l2_max = data_set_b["current_l2_max"]
-        person.current_l3_max = data_set_b["current_l3_max"]
+        person.current_l1_max = round(data_set_b["current_l1_max"]*1000)
+        person.current_l2_max = round(data_set_b["current_l2_max"]*1000)
+        person.current_l3_max = round(data_set_b["current_l3_max"]*1000)
         
-        person.voltage_l21_max = data_set_b["voltage_l21_max"]
-        person.voltage_l32_max = data_set_b["voltage_l32_max"]
-        person.voltage_l13_max = data_set_b["voltage_l13_max"]
+        person.voltage_l21_max = round(data_set_b["voltage_l21_max"]*1000)
+        person.voltage_l32_max = round(data_set_b["voltage_l32_max"]*1000)
+        person.voltage_l13_max = round(data_set_b["voltage_l13_max"]*1000)
 
-        person.temperature_l1 = data_set_b["temperature_l1"]
-        person.temperature_l2 = data_set_b["temperature_l2"]
-        person.temperature_l3 = data_set_b["temperature_l3"]
+        person.temperature_l1 = round(data_set_b["temperature_l1"]*1000)
+        person.temperature_l2 = round(data_set_b["temperature_l2"]*1000)
+        person.temperature_l3 = round(data_set_b["temperature_l3"]*1000)
         
-        person.voltage_aux = data_set_b["voltage_aux"]
-        person.frequency_Hz = data_set_b["frequency_Hz"]
-        person.power = data_set_b["power"]
+        person.voltage_aux = round(data_set_b["voltage_aux"]*1000)
+        person.frequency_Hz = round(data_set_b["frequency_Hz"]*1000)
+        person.power = round(data_set_b["power"]*1000)
         
         person.external_current_sensor = data_set_b["external_current_sensor"]
         person.supply_voltage = data_set_b["supply_voltage"]
