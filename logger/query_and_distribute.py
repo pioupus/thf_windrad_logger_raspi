@@ -81,10 +81,10 @@ while 1:
         person.frequency_Hz = int(round(data_set_b["frequency_Hz"]*1000))
         person.power = int(round(data_set_b["power"]*1000))
         
-        person.external_current_sensor = data_set_b["external_current_sensor"]
-        person.supply_voltage = data_set_b["supply_voltage"]
-        person.cpu_temperature = data_set_b["cpu_temperature"]
-        person.coin_cell_mv = data_set_b["coin_cell_mv"]
+        person.external_current_sensor = int(data_set_b["external_current_sensor"])
+        person.supply_voltage = int(data_set_b["supply_voltage"])
+        person.cpu_temperature = int(data_set_b["cpu_temperature"])
+        person.coin_cell_mv = int(data_set_b["coin_cell_mv"])
         
 
         mqtt_client.publish("enerlyzer/pwr/", data_set.SerializeToString(), qos=2)
