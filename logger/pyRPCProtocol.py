@@ -238,6 +238,7 @@ client = InfluxDBClient('localhost', 8086, 'influx_user', my_env["INFLUX_USER_PA
 while 1:
     test_function_param = {"channel":3}
     start_time = time.clock()
+    result = {}
     if SIMULATE_RPC:
         result = {}
         result["arguments"] = {}
