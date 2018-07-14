@@ -11,4 +11,4 @@ export THF_LOGGER_RPC_XML=$SCRIPTPATH"/xml/"
 export THF_LOGGER_RPC_BIN=${THF_LOGGER_RPC_BIN_PATH}/consoleapp
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${THF_LOGGER_RPC_BIN_PATH}
 
-./pyRPCProtocol.py
+./rpc_set_time.py
