@@ -44,7 +44,7 @@ class RPCProtocol:
         #print("test_str: "+test_str)
         decoded_answer = {}
         try:
-            decoded_answer = json.loads(test_str,json_string, parse_int=Decimal, parse_float=Decimal)
+            decoded_answer = json.loads(test_str, parse_int=Decimal, parse_float=Decimal)
             
         except ValueError:
             result = False
