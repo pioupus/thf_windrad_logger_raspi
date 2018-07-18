@@ -11,6 +11,8 @@ import socket
 import protobuf_logger_pb2
 import paho.mqtt.client as mqtt
 
+BROKER="broker.hivemq.com"
+
 def string_to_ord(text,length):
     result = []
     for char in text:
@@ -19,6 +21,9 @@ def string_to_ord(text,length):
         result.append(0)
     return result
 
+def mqtt_on_disconnect(client, userdata, flags, rc):
+     client.connect(BROKER)
+     
 class RPCProtocol:
     def __init__(self, comport_path, baud, xml_search_dir):
         my_env = os.environ.copy()
@@ -229,9 +234,10 @@ if not SIMULATE_RPC:
     result = proto.call("get_device_descriptor",arguments_get_adc_values)
     print("rpc_result: "+str(result))
 
-broker="broker.hivemq.com"
+
 mqtt_client= mqtt.Client("client-001") 
-mqtt_client.connect(broker)
+mqtt_client.connect(BROKER)
+client.mqtt_on_disconnect= mqtt_on_disconnect
 
 my_env = os.environ.copy()    
 client = InfluxDBClient('localhost', 8086, 'influx_user', my_env["INFLUX_USER_PASSWORD"], 'enerlyzer')
