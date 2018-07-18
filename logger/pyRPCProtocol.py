@@ -237,7 +237,7 @@ if not SIMULATE_RPC:
 
 mqtt_client= mqtt.Client("client-001") 
 mqtt_client.connect(BROKER)
-client.mqtt_on_disconnect= mqtt_on_disconnect
+mqtt_client.mqtt_on_disconnect= mqtt_on_disconnect
 
 my_env = os.environ.copy()    
 client = InfluxDBClient('localhost', 8086, 'influx_user', my_env["INFLUX_USER_PASSWORD"], 'enerlyzer')
