@@ -14,6 +14,21 @@ from decimal import Decimal
 
 BROKER="broker.hivemq.com"
 
+def mqtt_result_numer_to_string(rc):
+    if rc = 0:
+        return "Connection successfull("+str(rc)+")"
+    if rc = 1:
+        return "Connection refused - incorrect protocol version("+str(rc)+")"
+    if rc = 2:
+        return "Connection refused - invalid client identifier("+str(rc)+")"
+    if rc = 3:
+        return "Connection refused - server unavailable("+str(rc)+")"
+    if rc = 4:
+        return "Connection refused - bad username or password("+str(rc)+")"
+    if rc = 4:
+        return "Connection refused - not authorised("+str(rc)+")"      
+    return "Currently unused error code("+str(rc)+")"  
+    
 def string_to_ord(text,length):
     result = []
     for char in text:
@@ -23,7 +38,12 @@ def string_to_ord(text,length):
     return result
 
 def mqtt_on_disconnect(client, userdata, flags, rc):
-     client.connect(BROKER)
+    print("MQTT disconnected. Result: "+mqtt_result_numer_to_string(rc))
+    print("try to reconnect..")
+    client.reconnect()
+     
+def mqtt_on_connect(client, userdata, flags, rc):
+    print("MQTT connected. Result: "+mqtt_result_numer_to_string(rc))  
      
 class RPCProtocol:
     def __init__(self, comport_path, baud, xml_search_dir):
@@ -296,11 +316,11 @@ while 1:
     duration = (time.clock() - start_time)*1000
     logger_unix_time = float(result["arguments"]["unix_time"])
     sub_seconds = float(result["arguments"]["sub_seconds"])
-    print("logger_unix_time: "+str(logger_unix_time))
-    print("sub_seconds: "+str(sub_seconds))
+    #print("logger_unix_time: "+str(logger_unix_time))
+    #print("sub_seconds: "+str(sub_seconds))
     logger_unix_time = logger_unix_time + (sub_seconds/256.0)
-    print("logger_unix_time komplett : "+str(logger_unix_time))
-    print("")
+    #print("logger_unix_time komplett : "+str(logger_unix_time))
+    #print("")
     
     json_body =     [{
         "measurement": "powerdata",
@@ -390,7 +410,12 @@ while 1:
    
     client.write_points(json_body)
     
-    mqtt_client.publish("enerlyzer/live/pwr", protobuf_dataset.SerializeToString(), qos=2)
+    mqtt_publish_result = mqtt_client.publish("enerlyzer/live/pwr", protobuf_dataset.SerializeToString(), qos=2)
+    print(mqtt_publish_result)
+    if mqtt_publish_result.rc == MQTT_ERR_NO_CONN:
+        print("failed to publish MQTT. reconnect..")
+        mqtt_client.reconnect();
+        
     mqtt_client.loop(timeout=1.0)    
     time.sleep(0.5)
 
