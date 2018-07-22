@@ -412,8 +412,8 @@ while 1:
     client.write_points(json_body)
     
     mqtt_publish_result = mqtt_client.publish("enerlyzer/live/pwr", protobuf_dataset.SerializeToString(), qos=2)
-    print(mqtt_publish_result)
     if mqtt_publish_result.rc == mqtt.MQTT_ERR_NO_CONN:
+        print("MQTT publish result: "+str(mqtt_publish_result))
         print("failed to publish MQTT. reconnect..")
         mqtt_client.reconnect();
         
