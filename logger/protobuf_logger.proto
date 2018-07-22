@@ -3,7 +3,7 @@ syntax = "proto2";
 package enerlyzer;
 
 message dataset {
-    required float logger_time                 =  29;
+    required double logger_time                 =  29;
     required float current_l1_avg              =  1;
     required float current_l2_avg              =  2;
     required float current_l3_avg              =  3;
