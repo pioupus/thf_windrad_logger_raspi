@@ -295,10 +295,12 @@ while 1:
         
     duration = (time.clock() - start_time)*1000
     logger_unix_time = float(result["arguments"]["unix_time"])
+    sub_seconds = float(result["arguments"]["sub_seconds"]))
     print("logger_unix_time: "+str(logger_unix_time))
-    print("sub_seconds: "+str(result["arguments"]["sub_seconds"]))
-    logger_unix_time = logger_unix_time + float(result["arguments"]["sub_seconds"])/65536.0
+    print("sub_seconds: "+str(sub_seconds)
+    logger_unix_time = logger_unix_time + (sub_seconds/256.0)
     print("logger_unix_time komplett : "+str(logger_unix_time))
+    print("")
     
     json_body =     [{
         "measurement": "powerdata",
