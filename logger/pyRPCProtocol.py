@@ -259,7 +259,8 @@ if not SIMULATE_RPC:
 
 mqtt_client= mqtt.Client("client-001") 
 mqtt_client.connect(BROKER)
-mqtt_client.mqtt_on_disconnect= mqtt_on_disconnect
+mqtt_client.on_disconnect = mqtt_on_disconnect
+mqtt_client.on_connect = mqtt_on_connect
 
 my_env = os.environ.copy()    
 client = InfluxDBClient('localhost', 8086, 'influx_user', my_env["INFLUX_USER_PASSWORD"], 'enerlyzer')
@@ -412,7 +413,7 @@ while 1:
     
     mqtt_publish_result = mqtt_client.publish("enerlyzer/live/pwr", protobuf_dataset.SerializeToString(), qos=2)
     print(mqtt_publish_result)
-    if mqtt_publish_result.rc == MQTT_ERR_NO_CONN:
+    if mqtt_publish_result.rc == mqtt.MQTT_ERR_NO_CONN:
         print("failed to publish MQTT. reconnect..")
         mqtt_client.reconnect();
         
