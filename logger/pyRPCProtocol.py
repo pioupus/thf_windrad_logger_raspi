@@ -15,17 +15,17 @@ from decimal import Decimal
 BROKER="broker.hivemq.com"
 
 def mqtt_result_numer_to_string(rc):
-    if rc = 0:
+    if rc == 0:
         return "Connection successfull("+str(rc)+")"
-    if rc = 1:
+    if rc == 1:
         return "Connection refused - incorrect protocol version("+str(rc)+")"
-    if rc = 2:
+    if rc == 2:
         return "Connection refused - invalid client identifier("+str(rc)+")"
-    if rc = 3:
+    if rc == 3:
         return "Connection refused - server unavailable("+str(rc)+")"
-    if rc = 4:
+    if rc == 4:
         return "Connection refused - bad username or password("+str(rc)+")"
-    if rc = 4:
+    if rc == 4:
         return "Connection refused - not authorised("+str(rc)+")"      
     return "Currently unused error code("+str(rc)+")"  
     
