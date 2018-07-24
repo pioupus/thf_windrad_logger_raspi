@@ -33,4 +33,6 @@ message dataset {
     required float cpu_temperature             =  27;
     required float coin_cell_mv                =  28;
     required float used_storage_percent        =  30;
+    required double energy_start                = 31;
+    required double energy_Wh                   = 32;
 }

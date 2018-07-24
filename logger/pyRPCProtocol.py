@@ -266,7 +266,9 @@ mqtt_client.on_connect = mqtt_on_connect
 
 my_env = os.environ.copy()    
 client = InfluxDBClient('localhost', 8086, 'influx_user', my_env["INFLUX_USER_PASSWORD"], 'enerlyzer')
-
+last_time_stamp = 0;
+energy_Wh = 0.0
+energy_acquisition_start = 0;
 while 1:
     test_function_param = {"channel":3}
     start_time = time.clock()
@@ -317,18 +319,33 @@ while 1:
         result = proto.call("get_power_sensor_data",{})
         
     duration = (time.clock() - start_time)*1000
+    
+
+    
     logger_unix_time = float(result["arguments"]["unix_time"])
     sub_seconds = float(result["arguments"]["sub_seconds"])
     #print("logger_unix_time: "+str(logger_unix_time))
     #print("sub_seconds: "+str(sub_seconds))
     logger_unix_time = logger_unix_time + (sub_seconds/256.0)
-    #print("logger_unix_time komplett : "+str(logger_unix_time))
-    #print("")
+    interval = logger_unix_time-last_time_stamp
+    if last_time_stamp == 0:
+        interval = 0
+        energy_acquisition_start = logger_unix_time;
+        
+    last_time_stamp = logger_unix_time;
+    
+    float(result["arguments"]["power"]) = float(result["arguments"]["power"])/10.0*1000.0 #conversion to watt
+    energy_Wh = energy_Wh + float(result["arguments"]["power"])*interval/3600.0
+        
+        
     storage_statvfs = os.statvfs('/media/usbstick')
     storage_avail = storage_statvfs.f_frsize * storage_statvfs.f_bavail
     storage_size = storage_statvfs.f_frsize * storage_statvfs.f_blocks
     storage_used = storage_size-storage_avail
     storage_used_percent = 100.0 * storage_used / storage_size
+    
+
+    
     json_body =     [{
         "measurement": "powerdata",
         "time": datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f'),
@@ -370,7 +387,9 @@ while 1:
             
             "supply_voltage":  float(result["arguments"]["supply_voltage"]),
             "cpu_temperature":  float(result["arguments"]["cpu_temperature"]),
-            "coin_cell_mv":  float(result["arguments"]["coin_cell_mv"])            
+            "coin_cell_mv":  float(result["arguments"]["coin_cell_mv"])      ,
+            "energy_Wh": energy_Wh,
+            "energy_start": energy_acquisition_start
             
         }
     }]
@@ -415,6 +434,9 @@ while 1:
     protobuf_dataset.coin_cell_mv = json_body[0]["fields"]["coin_cell_mv"]
     
     protobuf_dataset.used_storage_percent = storage_used_percent;
+    protobuf_dataset.energy_Wh = energy_Wh;
+    protobuf_dataset.energy_start = energy_acquisition_start;
+    
     
    
     client.write_points(json_body)
