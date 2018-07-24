@@ -334,7 +334,7 @@ while 1:
         
     last_time_stamp = logger_unix_time;
     
-    float(result["arguments"]["power"]) = float(result["arguments"]["power"])/10.0*1000.0 #conversion to watt
+    result["arguments"]["power"] = float(result["arguments"]["power"])/10.0*1000.0 #conversion to watt
     energy_Wh = energy_Wh + float(result["arguments"]["power"])*interval/3600.0
         
         
