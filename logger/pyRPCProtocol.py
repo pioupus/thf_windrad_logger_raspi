@@ -11,6 +11,8 @@ import socket
 import protobuf_logger_pb2
 import paho.mqtt.client as mqtt
 from decimal import Decimal
+import os
+
 
 BROKER="broker.hivemq.com"
 
@@ -322,7 +324,11 @@ while 1:
     logger_unix_time = logger_unix_time + (sub_seconds/256.0)
     #print("logger_unix_time komplett : "+str(logger_unix_time))
     #print("")
-    
+    storage_statvfs = os.statvfs('/media/usbstick')
+    storage_avail = storage_statvfs.f_frsize * storage_statvfs.f_bavail
+    storage_size = storage_statvfs.f_frsize * storage_statvfs.f_blocks
+    storage_used = storage_size-storage_avail
+    storage_used_percent = 100.0 * storage_used / storage_size
     json_body =     [{
         "measurement": "powerdata",
         "time": datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f'),
@@ -407,6 +413,8 @@ while 1:
     protobuf_dataset.supply_voltage = json_body[0]["fields"]["supply_voltage"]
     protobuf_dataset.cpu_temperature = json_body[0]["fields"]["cpu_temperature"]
     protobuf_dataset.coin_cell_mv = json_body[0]["fields"]["coin_cell_mv"]
+    
+    protobuf_dataset.used_storage_percent = storage_used_percent;
     
    
     client.write_points(json_body)
