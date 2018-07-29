@@ -1,6 +1,7 @@
 #!/usr/bin/env python 
 import subprocess
 from influxdb import InfluxDBClient
+from influxdb.exceptions import InfluxDBClientError
 import time
 import os
 import json
@@ -275,7 +276,7 @@ try:
         }
     }]
     client.write_points(json_body)
-except InfluxDBClient.InfluxDBClientError as e:
+except InfluxDBClientError as e:
     if e.code == 404:
         print("db doesnt exist")
     else:
