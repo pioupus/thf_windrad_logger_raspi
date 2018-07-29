@@ -265,7 +265,13 @@ mqtt_client.on_disconnect = mqtt_on_disconnect
 mqtt_client.on_connect = mqtt_on_connect
 
 my_env = os.environ.copy()    
-client = InfluxDBClient('localhost', 8086, 'influx_user', my_env["INFLUX_USER_PASSWORD"], 'enerlyzer')
+try:
+    client = InfluxDBClient('localhost', 8086, 'influx_user', my_env["INFLUX_USER_PASSWORD"], 'enerlyzer')
+    break
+except influxdb.exceptions.InfluxDBClientError,content,code=None:
+    if code == 404:
+        print("db doesnt exist")
+
 last_time_stamp = 0;
 energy_Wh = 0.0
 energy_acquisition_start = 0;
