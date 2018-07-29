@@ -265,12 +265,20 @@ mqtt_client.on_disconnect = mqtt_on_disconnect
 mqtt_client.on_connect = mqtt_on_connect
 
 my_env = os.environ.copy()    
+client = InfluxDBClient('localhost', 8086, 'influx_user', my_env["INFLUX_USER_PASSWORD"], 'enerlyzer')
 try:
-    client = InfluxDBClient('localhost', 8086, 'influx_user', my_env["INFLUX_USER_PASSWORD"], 'enerlyzer')
-
+    json_body =     [{
+        "measurement": "test",
+        "time": datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f'),
+        "fields": {
+            "test":      123            
+        }
+    }]
+    client.write_points(json_body)
 except influxdb.exceptions.InfluxDBClientErrore as e:
     if e.code == 404:
         print("db doesnt exist")
+        
 
 last_time_stamp = 0;
 energy_Wh = 0.0
