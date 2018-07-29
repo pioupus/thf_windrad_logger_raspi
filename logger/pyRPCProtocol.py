@@ -267,7 +267,7 @@ mqtt_client.on_connect = mqtt_on_connect
 
 my_env = os.environ.copy()    
 client = InfluxDBClient('localhost', 8086, 'influx_user', my_env["INFLUX_USER_PASSWORD"], 'enerlyzer')
-while true:
+while True:
     try:
         json_body =     [{
             "measurement": "test",
