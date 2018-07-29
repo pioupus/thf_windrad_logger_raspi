@@ -17,6 +17,7 @@ import os
 
 BROKER="broker.hivemq.com"
 INFLUX_DB_NAME = "enerlyzer"+datetime.now().strftime("%Y_%m-%d_%H_%M_%S")
+
 def mqtt_result_numer_to_string(rc):
     if rc == 0:
         return "Connection successfull("+str(rc)+")"
@@ -229,6 +230,7 @@ my_env = os.environ.copy()
 print("using THF_LOGGER_SERIAL "+my_env["THF_LOGGER_SERIAL"])  
 print("using THF_LOGGER_BAUD "+my_env["THF_LOGGER_BAUD"])  
 print("using THF_LOGGER_RPC_XML "+my_env["THF_LOGGER_RPC_XML"])  
+print("using db: "+INFLUX_DB_NAME)
 
 SIMULATE_RPC = 0
 if not SIMULATE_RPC:
