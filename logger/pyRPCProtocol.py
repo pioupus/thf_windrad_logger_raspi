@@ -267,20 +267,24 @@ mqtt_client.on_connect = mqtt_on_connect
 
 my_env = os.environ.copy()    
 client = InfluxDBClient('localhost', 8086, 'influx_user', my_env["INFLUX_USER_PASSWORD"], 'enerlyzer')
-try:
-    json_body =     [{
-        "measurement": "test",
-        "time": datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f'),
-        "fields": {
-            "test":      123            
-        }
-    }]
-    client.write_points(json_body)
-except InfluxDBClientError as e:
-    if e.code == 404:
-        print("db doesnt exist")
-    else:
-        print("other error: "+str(e))
+while true:
+    try:
+        json_body =     [{
+            "measurement": "test",
+            "time": datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f'),
+            "fields": {
+                "test":      123            
+            }
+        }]
+        client.write_points(json_body)
+        print("influx db successfully tested.")
+        break
+    except InfluxDBClientError as e:
+        if e.code == 404:
+            print("enerlyzer db does not exist. create one.")
+            client.create_database('enerlyzer')
+        else:
+            print("other error: "+str(e))
 
         
 
