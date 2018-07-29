@@ -268,8 +268,8 @@ my_env = os.environ.copy()
 try:
     client = InfluxDBClient('localhost', 8086, 'influx_user', my_env["INFLUX_USER_PASSWORD"], 'enerlyzer')
     break
-except influxdb.exceptions.InfluxDBClientError,content,code:
-    if code == 404:
+except influxdb.exceptions.InfluxDBClientErrore as e:
+    if e.code == 404:
         print("db doesnt exist")
 
 last_time_stamp = 0;
