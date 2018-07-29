@@ -275,7 +275,7 @@ try:
         }
     }]
     client.write_points(json_body)
-except InfluxDBClientError as e:
+except InfluxDBClient.InfluxDBClientError as e:
     if e.code == 404:
         print("db doesnt exist")
     else:
