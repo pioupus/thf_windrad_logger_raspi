@@ -16,7 +16,7 @@ import os
 
 
 BROKER="broker.hivemq.com"
-
+INFLUX_DB_NAME = "enerlyzer"+datetime.now().strftime("%Y_%m-%d_%H_%M_%S")
 def mqtt_result_numer_to_string(rc):
     if rc == 0:
         return "Connection successfull("+str(rc)+")"
@@ -266,7 +266,7 @@ mqtt_client.on_disconnect = mqtt_on_disconnect
 mqtt_client.on_connect = mqtt_on_connect
 
 my_env = os.environ.copy()    
-client = InfluxDBClient('localhost', 8086, 'influx_user', my_env["INFLUX_USER_PASSWORD"], 'enerlyzer')
+client = InfluxDBClient('localhost', 8086, 'influx_user', my_env["INFLUX_USER_PASSWORD"], INFLUX_DB_NAME)
 while True:
     try:
         json_body =     [{
@@ -282,7 +282,7 @@ while True:
     except InfluxDBClientError as e:
         if e.code == 404:
             print("enerlyzer db does not exist. create one.")
-            client.create_database('enerlyzer')
+            client.create_database(INFLUX_DB_NAME)
         else:
             print("other error: "+str(e))
 
