@@ -293,6 +293,8 @@ while True:
 last_time_stamp = 0;
 energy_Wh = 0.0
 energy_acquisition_start = 0;
+last_max_voltages = [0,0,0]
+last_max_currents = [0,0,0]
 while 1:
     test_function_param = {"channel":3}
     start_time = time.clock()
@@ -368,6 +370,34 @@ while 1:
     storage_used = storage_size-storage_avail
     storage_used_percent = 100.0 * storage_used / storage_size
     
+            
+    if float(result["arguments"]["current_l1_max"]) == 0:
+        result["arguments"]["current_l1_max"] = last_max_currents[0]
+    last_max_currents[0] = result["arguments"]["current_l1_max"]      
+
+    if float(result["arguments"]["current_l2_max"]) == 0:
+        result["arguments"]["current_l2_max"] = last_max_currents[1]
+    last_max_currents[1] = result["arguments"]["current_l2_max"]      
+    
+    if float(result["arguments"]["current_l3_max"]) == 0:
+        result["arguments"]["current_l3_max"] = last_max_currents[2]
+    last_max_currents[2] = result["arguments"]["current_l3_max"]        
+        
+    if float(result["arguments"]["voltage_l21_max"]) == 0:
+        result["arguments"]["voltage_l21_max"] = last_max_voltages[0]
+    last_max_voltages[0] = result["arguments"]["voltage_l21_max"]
+    
+    if float(result["arguments"]["voltage_l32_max"]) == 0:
+        result["arguments"]["voltage_l32_max"] = last_max_voltages[1]
+    last_max_voltages[1] = result["arguments"]["voltage_l32_max"]        
+        
+    if float(result["arguments"]["voltage_l13_max"]) == 0:
+        result["arguments"]["voltage_l13_max"] = last_max_voltages[2]
+    last_max_voltages[2] = result["arguments"]["voltage_l13_max"]
+        
+
+    
+
 
     
     json_body =     [{
