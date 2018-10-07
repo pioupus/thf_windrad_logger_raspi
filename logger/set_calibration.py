@@ -150,7 +150,7 @@ if not DRY_TEST:
 
             
             
-        def call(self,function_name, arguments, timeout_ms = 100):
+        def call(self,function_name, arguments, timeout_ms = 5000):
             rpc_request = {
                     'rpc':{
                         'timeout_ms':timeout_ms,
