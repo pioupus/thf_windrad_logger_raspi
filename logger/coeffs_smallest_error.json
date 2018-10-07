@@ -1,0 +1,327 @@
+{
+    "curr_l1_neg": {
+        "coeffs_float": {
+            "coeff": [
+                1.1218442522906595, 
+                1.1112928821242296
+            ], 
+            "rms": 0.6434696950687934
+        }, 
+        "coeffs_rounded": {
+            "coeff": {
+                "coeff_0": 72830.0, 
+                "coeff_1": 73521.0, 
+                "coeff_2": 0
+            }, 
+            "rms": 0.6434710127344327
+        }, 
+        "coloumn": "current_l1_avg", 
+        "deg": 1, 
+        "filename": "calibdata_Curr_neg-2018_06_12-23_15_05-001.csv"
+    }, 
+    "curr_l1_pos": {
+        "coeffs_float": {
+            "coeff": [
+                1.1176580119209216, 
+                -1.1129354020551583
+            ], 
+            "rms": 0.6161393444335751
+        }, 
+        "coeffs_rounded": {
+            "coeff": {
+                "coeff_0": -72937.0, 
+                "coeff_1": 73247.0, 
+                "coeff_2": 0
+            }, 
+            "rms": 0.6161404655225131
+        }, 
+        "coloumn": "current_l1_avg", 
+        "deg": 1, 
+        "filename": "calibdata_Curr_pos-2018_06_12-23_27_48-001.csv"
+    }, 
+    "curr_l2_neg": {
+        "coeffs_float": {
+            "coeff": [
+                1.1239480613418522, 
+                1.5074357632325615
+            ], 
+            "rms": 0.39594205880356137
+        }, 
+        "coeffs_rounded": {
+            "coeff": {
+                "coeff_0": 98791.0, 
+                "coeff_1": 73659.0, 
+                "coeff_2": 0
+            }, 
+            "rms": 0.39594229004302994
+        }, 
+        "coloumn": "current_l2_avg", 
+        "deg": 1, 
+        "filename": "calibdata_Curr_neg-2018_06_12-23_15_05-001.csv"
+    }, 
+    "curr_l2_pos": {
+        "coeffs_float": {
+            "coeff": [
+                1.1213588097650873, 
+                0.1418749987166041
+            ], 
+            "rms": 0.5971856191414496
+        }, 
+        "coeffs_rounded": {
+            "coeff": {
+                "coeff_0": 9298.0, 
+                "coeff_1": 73489.0, 
+                "coeff_2": 0
+            }, 
+            "rms": 0.5971913875475126
+        }, 
+        "coloumn": "current_l2_avg", 
+        "deg": 1, 
+        "filename": "calibdata_Curr_pos-2018_06_12-23_27_48-001.csv"
+    }, 
+    "curr_l3_neg": {
+        "coeffs_float": {
+            "coeff": [
+                1.1139387892628756, 
+                2.112288955997393
+            ], 
+            "rms": 0.3320893993325059
+        }, 
+        "coeffs_rounded": {
+            "coeff": {
+                "coeff_0": 138431.0, 
+                "coeff_1": 73003.0, 
+                "coeff_2": 0
+            }, 
+            "rms": 0.3320900482838468
+        }, 
+        "coloumn": "current_l3_avg", 
+        "deg": 1, 
+        "filename": "calibdata_Curr_neg-2018_06_12-23_15_05-001.csv"
+    }, 
+    "curr_l3_pos": {
+        "coeffs_float": {
+            "coeff": [
+                1.1167386162813429, 
+                1.7647567611818429
+            ], 
+            "rms": 0.3985108473948256
+        }, 
+        "coeffs_rounded": {
+            "coeff": {
+                "coeff_0": 115655.0, 
+                "coeff_1": 73187.0, 
+                "coeff_2": 0
+            }, 
+            "rms": 0.39852185580453997
+        }, 
+        "coloumn": "current_l3_avg", 
+        "deg": 1, 
+        "filename": "calibdata_Curr_pos-2018_06_12-23_27_48-001.csv"
+    }, 
+    "external_current_sensor": {
+        "coeffs_float": {
+            "coeff": [
+                0.5693513715041089, 
+                -2.503881321695672
+            ], 
+            "rms": 3.498806450645943
+        }, 
+        "coeffs_rounded": {
+            "coeff": {
+                "coeff_0": -164094.0, 
+                "coeff_1": 37313.0, 
+                "coeff_2": 0
+            }, 
+            "rms": 3.498806458626382
+        }, 
+        "coloumn": "external_current_sensor", 
+        "deg": 1, 
+        "filename": "calibdata_external_current_sensor-2018_06_16-17_06_32-001.csv"
+    }, 
+    "hall_sensor": {
+        "coeffs_float": {
+            "coeff": [
+                -4.299438542358843e-05, 
+                0.1710230232443826, 
+                0.8616673164563073
+            ], 
+            "rms": 0.40163844235357293
+        }, 
+        "coeffs_rounded": {
+            "coeff": {
+                "coeff_0": 56470.0, 
+                "coeff_1": 11208.0, 
+                "coeff_2": -3.0
+            }, 
+            "rms": 0.4095524284028804
+        }, 
+        "coloumn": "voltage_hall", 
+        "deg": 2, 
+        "filename": "ext_curr_hall_sensor.csv"
+    }, 
+    "volt_aux": {
+        "coeffs_float": {
+            "coeff": [
+                999.9999999999999, 
+                1.8158262945446805e-12
+            ], 
+            "rms": 2.1530842603748458e-12
+        }, 
+        "coeffs_rounded": {
+            "coeff": {
+                "coeff_0": 0.0, 
+                "coeff_1": 65536000.0, 
+                "coeff_2": 0
+            }, 
+            "rms": 1.158610906494447e-12
+        }, 
+        "coloumn": "volt_aux", 
+        "deg": 1, 
+        "filename": "calibdata_volt_aux-2018_06_16-11_58_07-001.csv"
+    }, 
+    "volt_l13_neg": {
+        "coeffs_float": {
+            "coeff": [
+                -1.3926415136944382e-05, 
+                2.016372810865137, 
+                5.4253823703250035
+            ], 
+            "rms": 7.228413188790213
+        }, 
+        "coeffs_rounded": {
+            "coeff": {
+                "coeff_0": 355558.0, 
+                "coeff_1": 132145.0, 
+                "coeff_2": -1.0
+            }, 
+            "rms": 7.3517418956711165
+        }, 
+        "coloumn": "voltage_l21_avg", 
+        "deg": 2, 
+        "filename": "calibdata_volt_l13_neg-2018_06_16-00_32_09-001.csv"
+    }, 
+    "volt_l13_pos": {
+        "coeffs_float": {
+            "coeff": [
+                1.997693871550652, 
+                -4.390451463210183
+            ], 
+            "rms": 0.9422348137989894
+        }, 
+        "coeffs_rounded": {
+            "coeff": {
+                "coeff_0": -287733.0, 
+                "coeff_1": 130921.0, 
+                "coeff_2": 0
+            }, 
+            "rms": 0.9422364966576301
+        }, 
+        "coloumn": "voltage_l21_avg", 
+        "deg": 1, 
+        "filename": "calibdata_volt_l13_pos-2018_06_16-10_42_14-001.csv"
+    }, 
+    "volt_l21_neg": {
+        "coeffs_float": {
+            "coeff": [
+                1.9974532035649577, 
+                -8.34121973079944
+            ], 
+            "rms": 0.7310257838600211
+        }, 
+        "coeffs_rounded": {
+            "coeff": {
+                "coeff_0": -546650.0, 
+                "coeff_1": 130905.0, 
+                "coeff_2": 0
+            }, 
+            "rms": 0.7310268301792211
+        }, 
+        "coloumn": "voltage_l21_avg", 
+        "deg": 1, 
+        "filename": "calibdata_volt_l21_neg-2018_06_14-22_28_42-001.csv"
+    }, 
+    "volt_l21_pos": {
+        "coeffs_float": {
+            "coeff": [
+                -1.362185200526382e-05, 
+                2.014511989888152, 
+                8.36461504729657
+            ], 
+            "rms": 8.625760780446367
+        }, 
+        "coeffs_rounded": {
+            "coeff": {
+                "coeff_0": 548183.0, 
+                "coeff_1": 132023.0, 
+                "coeff_2": -1.0
+            }, 
+            "rms": 8.781529910311493
+        }, 
+        "coloumn": "voltage_l21_avg", 
+        "deg": 2, 
+        "filename": "calibdata_volt_l21_pos-2018_06_14-21_41_12-001.csv"
+    }, 
+    "volt_l32_neg": {
+        "coeffs_float": {
+            "coeff": [
+                1.9973930482589948, 
+                -8.252891656287945
+            ], 
+            "rms": 0.8007557595839939
+        }, 
+        "coeffs_rounded": {
+            "coeff": {
+                "coeff_0": -540862.0, 
+                "coeff_1": 130901.0, 
+                "coeff_2": 0
+            }, 
+            "rms": 0.8007582889616643
+        }, 
+        "coloumn": "voltage_l21_avg", 
+        "deg": 1, 
+        "filename": "calibdata_volt_l32_neg-2018_06_15-20_12_53-001.csv"
+    }, 
+    "volt_l32_pos": {
+        "coeffs_float": {
+            "coeff": [
+                -1.3289169285172095e-05, 
+                2.014168483467791, 
+                8.4775832674485
+            ], 
+            "rms": 7.890060187539302
+        }, 
+        "coeffs_rounded": {
+            "coeff": {
+                "coeff_0": 555587.0, 
+                "coeff_1": 132001.0, 
+                "coeff_2": -1.0
+            }, 
+            "rms": 8.133290157345117
+        }, 
+        "coloumn": "voltage_l21_avg", 
+        "deg": 2, 
+        "filename": "calibdata_volt_l32_pos-2018_06_15-21_16_04-001.csv"
+    }, 
+    "volt_supply": {
+        "coeffs_float": {
+            "coeff": [
+                -0.0002806511342455291, 
+                16.384742972526325, 
+                -273.28795776847346
+            ], 
+            "rms": 122.92653903126023
+        }, 
+        "coeffs_rounded": {
+            "coeff": {
+                "coeff_0": -17910200.0, 
+                "coeff_1": 1073791.0, 
+                "coeff_2": -18.0
+            }, 
+            "rms": 123.56208151423029
+        }, 
+        "coloumn": "supply_voltage", 
+        "deg": 2, 
+        "filename": "calibdata_supply_voltage-2018_06_16-15_49_31-001.csv"
+    }
+}

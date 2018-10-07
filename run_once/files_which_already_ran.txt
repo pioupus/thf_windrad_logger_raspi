@@ -1,0 +1,2 @@
+../run_once/test2.py
+../run_once/test.sh
