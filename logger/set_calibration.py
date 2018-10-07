@@ -244,7 +244,7 @@ CHANNEL_ENTRIES=[
 ]
 
 json_coeffs = {}
-bin_path = my_env["THF_LOGGER_RPC_BIN"]
+bin_path = my_env["THF_LOGGER_RPC_BIN_PATH"]
 with open(bin_path+'../../logger/coeffs_smallest_error.json') as f:
     json_coeffs = json.load(f)
 
