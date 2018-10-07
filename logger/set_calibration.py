@@ -263,7 +263,7 @@ for channel_entry in CHANNEL_ENTRIES:
         index[channel_entry["channel_name"]] = index[channel_entry["channel_name"]] + 1
     CHANNEL_INDEXES[channel_entry["channel_name"]][channel_entry["rpc_name"]] = index[channel_entry["channel_name"]]
 
-calib_data = {}
+set_calibration_arguments = {}
 if not DRY_TEST:
     calib_data =  proto.call("get_calibration_data",set_calibration_arguments)["arguments"]
 else:
