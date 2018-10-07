@@ -18,6 +18,10 @@ import os
 BROKER="broker.hivemq.com"
 INFLUX_DB_NAME = "enerlyzer"+datetime.now().strftime("%Y_%m-%d_%H_%M_%S")
 
+json_coeffs = {}
+with open('coeffs_smallest_error.json') as f:
+    json_coeffs = json.load(f)
+    
 def mqtt_result_numer_to_string(rc):
     if rc == 0:
         return "Connection successfull("+str(rc)+")"
@@ -396,10 +400,20 @@ while 1:
     last_max_voltages[2] = result["arguments"]["voltage_l13_max"]
         
 
-    
-
-
-    
+    #Umrechnung von Spannung aus ext_current_sensor in Strom
+    HALL_SENSOR_WINDUNGEN = 2
+    ext_current_sensor = float(result["arguments"]["external_current_sensor"])
+    ext_current_sensor = ext_current_sensor -10.0 #remove offset
+    if ext_current_sensor < 0:
+        ext_current_sensor = 0
+    hall_sensor_coeffs = json_coeffs["hall_sensor"]["coeffs_float"]["coeff"]
+    if len(hall_sensor_coeffs) == 3:
+        ext_current_sensor = hall_sensor_coeffs[-1] + hall_sensor_coeffs[-2]*ext_current_sensor + hall_sensor_coeffs[-3]*ext_current_sensor*ext_current_sensor
+        
+    if len(hall_sensor_coeffs) == 2:
+        ext_current_sensor = hall_sensor_coeffs[-1] + hall_sensor_coeffs[-2]*ext_current_sensor
+        
+    ext_current_sensor = ext_current_sensor/HALL_SENSOR_WINDUNGEN
     json_body =     [{
         "measurement": "powerdata",
         "time": datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f'),
@@ -437,7 +451,7 @@ while 1:
             
             "frequency_Hz":  float(result["arguments"]["frequency_Hz"]),
             "power":  float(result["arguments"]["power"]),
-            "external_current_sensor":  float(result["arguments"]["external_current_sensor"]),
+            "external_current_sensor":  float(ext_current_sensor),
             
             "supply_voltage":  float(result["arguments"]["supply_voltage"]),
             "cpu_temperature":  float(result["arguments"]["cpu_temperature"]),

@@ -142,22 +142,21 @@
     "hall_sensor": {
         "coeffs_float": {
             "coeff": [
-                -4.299438542358843e-05, 
-                0.1710230232443826, 
-                0.8616673164563073
+                0.15750989702813295, 
+                3.3404694202250034
             ], 
-            "rms": 0.40163844235357293
+            "rms": 0.03333952883142303
         }, 
         "coeffs_rounded": {
             "coeff": {
-                "coeff_0": 56470.0, 
-                "coeff_1": 11208.0, 
-                "coeff_2": -3.0
+                "coeff_0": 218921.0, 
+                "coeff_1": 10323.0, 
+                "coeff_2": 0
             }, 
-            "rms": 0.4095524284028804
+            "rms": 0.03335283135043368
         }, 
-        "coloumn": "voltage_hall", 
-        "deg": 2, 
+        "coloumn": "voltage_hall_ohne_offset", 
+        "deg": 1, 
         "filename": "ext_curr_hall_sensor.csv"
     }, 
     "volt_aux": {
