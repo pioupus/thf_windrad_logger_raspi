@@ -26,5 +26,6 @@ with open(FILENAME_HOSTS, 'w') as f:
     
 with open(FILENAME_HOST_NAME, 'w') as f:
         f.write(DESIRED_HOST_NAME)
-    
+
+
     
