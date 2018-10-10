@@ -1,5 +1,6 @@
 #!/usr/bin/env python 
 from influxdb import InfluxDBClient
+from influxdb.exceptions import InfluxDBClientError
 import time
 from datetime import datetime
 import requests
@@ -11,10 +12,15 @@ START_UP_TIMEOUT = 5*60
 def is_influx_failing():
     try:
         client = InfluxDBClient('localhost', 8086, 'root', 'root', DB_NAME)
-        client.get_list_measurements()
+        query = 'select value from cpu_load_short;'
+        #client.get_list_measurements()
+        result = client.query(query)
         return False
     except requests.exceptions.ConnectionError:
         return True
+    except InfluxDBClientError as e:
+        print(e.message)
+        return False
 
 while True:
     if is_influx_failing():
