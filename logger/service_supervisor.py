@@ -25,7 +25,9 @@ def is_influx_failing():
 while True:
     if is_influx_failing():
         print('influxdb could not connect')
-        call(["systemctl", "restart", "influxdb"])
+        call(["systemctl", "stop", "influxdb"])
+        time.sleep(1)
+        call(["systemctl", "start", "influxdb"])
         timer_value = 0
         successfully_restarted = True
         while is_influx_failing():
