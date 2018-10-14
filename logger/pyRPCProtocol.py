@@ -573,7 +573,7 @@ while 1:
                 sample_time_stamp_unix=  result["unix_time"]
                 sample_time_stamp_subseconds=  result["sub_seconds"]
 
-            filename = str(sample_time_stamp_unix)+"_"+str(sample_time_stamp_subseconds).zfill(3)+datetime.utcnow().strftime('%Y-%m-%dT%H_%M_%S.%f')+".csv.gz"
+            filename = str(sample_time_stamp_unix)+"_"+str(sample_time_stamp_subseconds).zfill(3)+datetime.utcnow().strftime('_%Y-%m-%dT%H_%M_%S.%f')+".csv.gz"
             with gzip.open(SAMPLE_DATA_FOLDER+filename, 'wb') as zipped_file:
                 csv_sample_data_writer = csv.writer(zipped_file, delimiter=';',quotechar='|', quoting=csv.QUOTE_MINIMAL)
                 row = []
