@@ -13,10 +13,42 @@ import protobuf_logger_pb2
 import paho.mqtt.client as mqtt
 from decimal import Decimal
 import os
+import csv
+import gzip
 
 
 BROKER="broker.hivemq.com"
 INFLUX_DB_NAME = "enerlyzer"+datetime.now().strftime("%Y_%m-%d_%H_%M_%S")
+CHANNEL_NAME_INDEXES = [
+    "adc_value_curr_l1",
+    "adc_value_curr_l2",
+    "adc_value_curr_l3",
+    "adc_value_vref",
+    "adc_value_volt_l21",
+    "adc_value_volt_l32",
+    "adc_value_volt_l13",
+    "adc_value_aux_volt",
+    "adc_value_temp_l1",
+    "adc_value_temp_l2",
+    "adc_value_temp_l3"
+]
+
+SAMPLE_CHANNEL_INDEXES = [
+    CHANNEL_NAME_INDEXES.index("adc_value_curr_l1"),
+    CHANNEL_NAME_INDEXES.index("adc_value_curr_l2"),
+    CHANNEL_NAME_INDEXES.index("adc_value_curr_l3"),
+    CHANNEL_NAME_INDEXES.index("adc_value_vref"),
+    CHANNEL_NAME_INDEXES.index("adc_value_volt_l21"),
+    CHANNEL_NAME_INDEXES.index("adc_value_volt_l32"),
+    CHANNEL_NAME_INDEXES.index("adc_value_volt_l13")  
+]
+
+SAMPLE_DATA_INTERVAL_s = 60*20
+SAMPLE_DATA_FOLDER = "/media/usbstick/sample_data/"
+
+
+if not os.path.exists(directory):
+    os.makedirs(SAMPLE_DATA_FOLDER)
 
 json_coeffs = {}
 with open('coeffs_smallest_error.json') as f:
@@ -235,6 +267,7 @@ print("using THF_LOGGER_SERIAL "+my_env["THF_LOGGER_SERIAL"])
 print("using THF_LOGGER_BAUD "+my_env["THF_LOGGER_BAUD"])  
 print("using THF_LOGGER_RPC_XML "+my_env["THF_LOGGER_RPC_XML"])  
 print("using db: "+INFLUX_DB_NAME)
+last_sample_time_unix = 0
 
 SIMULATE_RPC = 0
 if not SIMULATE_RPC:
@@ -364,7 +397,7 @@ while 1:
         
     last_time_stamp = logger_unix_time;
     
-    result["arguments"]["power"] = float(result["arguments"]["power"])/10.0*1000.0 #conversion to watt
+    result["arguments"]["power"] = float(result["arguments"]["power"])/(100*100.0) #conversion to watt
     energy_Wh = energy_Wh + float(result["arguments"]["power"])*interval/3600.0
         
         
@@ -516,5 +549,41 @@ while 1:
         mqtt_client.reconnect();
         
     mqtt_client.loop(timeout=1.0)    
+    if SIMULATE_RPC:
+        result = {}
+    else:
+        if last_sample_time_unix+SAMPLE_DATA_INTERVAL_s < round(time.time()):
+            proto.call("acquire_sample_data",{})
+            sample_data_complete = 0
+            while sample_data_complete == 0:
+                time.sleep(0.05)
+                sample_data_complete = proto.call("is_sample_data_complete",{})["arguments"]
+
+            csv_coloumn = []
+            sample_time_stamp_unix = 0;
+            sample_time_stamp_subseconds = 0;
+            for channel in SAMPLE_CHANNEL_INDEXES:
+                set_calibration_arguments = {}
+                set_calibration_arguments["channel"] = channel
+                result = proto.call("get_sample_data",set_calibration_arguments)["arguments"]
+                csv_coloumn.append(result["sample"])
+                sample_time_stamp_unix=  result["unix_time"]
+                sample_time_stamp_subseconds=  result["sub_seconds"]
+
+            filename = str(logger_unix_time)+"_"+str(sub_seconds).zfill(3)+".csv.gz"
+            with gzip.open(SAMPLE_DATA_FOLDER+filename, 'wb') as zipped_file:
+                csv_sample_data_writerefo = csv.writer(zipped_file, delimiter=';',
+                                        quotechar='|', quoting=csv.QUOTE_MINIMAL)
+                row = []
+                for col_index in SAMPLE_CHANNEL_INDEXES:
+                    row.append(CHANNEL_NAME_INDEXES[col_index])
+                csv_sample_data_writer.writerow(row)
+                for row_index in range(len(csv_coloumn[0])):
+                    row = []
+                    for col_index in range(len(SAMPLE_CHANNEL_INDEXES)):
+                        row.append(csv_coloumn[col_index][row_index])
+    
+                    csv_sample_data_writer.writerow(row)
+            last_sample_time_unix = round(time.time())
     time.sleep(0.5)
 
