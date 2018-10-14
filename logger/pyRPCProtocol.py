@@ -575,7 +575,7 @@ while 1:
 
             filename = str(logger_unix_time)+"_"+str(sub_seconds).zfill(3)+".csv.gz"
             with gzip.open(SAMPLE_DATA_FOLDER+filename, 'wb') as zipped_file:
-                csv_sample_data_writerefo = csv.writer(zipped_file, delimiter=';',
+                csv_sample_data_writer = csv.writer(zipped_file, delimiter=';',
                                         quotechar='|', quoting=csv.QUOTE_MINIMAL)
                 row = []
                 for col_index in SAMPLE_CHANNEL_INDEXES:
