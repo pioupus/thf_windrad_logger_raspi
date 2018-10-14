@@ -555,12 +555,12 @@ while 1:
         if last_sample_time_unix+SAMPLE_DATA_INTERVAL_s < round(time.time()):
             print("sampling waveforms")
             result = proto.call("acquire_sample_data",{})
-            print(result)
-            sample_data_complete = 0
-            while sample_data_complete == 0:
-                time.sleep(0.5)
-                sample_data_complete = proto.call("is_sample_data_complete",{})["arguments"]
-                print(sample_data_complete)
+            #print(result)
+            #sample_data_complete = 0
+            #while sample_data_complete == 0:
+            #    time.sleep(0.5)
+            #    sample_data_complete = proto.call("is_sample_data_complete",{})["arguments"]
+            #    print(sample_data_complete)
 
             csv_coloumn = []
             sample_time_stamp_unix = 0;
