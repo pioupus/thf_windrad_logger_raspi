@@ -557,8 +557,9 @@ while 1:
             proto.call("acquire_sample_data",{})
             sample_data_complete = 0
             while sample_data_complete == 0:
-                time.sleep(0.05)
+                time.sleep(0.5)
                 sample_data_complete = proto.call("is_sample_data_complete",{})["arguments"]
+                print(sample_data_complete)
 
             csv_coloumn = []
             sample_time_stamp_unix = 0;
