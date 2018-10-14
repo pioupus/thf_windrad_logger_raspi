@@ -47,7 +47,7 @@ SAMPLE_DATA_INTERVAL_s = 60*20
 SAMPLE_DATA_FOLDER = "/media/usbstick/sample_data/"
 
 
-if not os.path.exists(directory):
+if not os.path.exists(SAMPLE_DATA_FOLDER):
     os.makedirs(SAMPLE_DATA_FOLDER)
 
 json_coeffs = {}
