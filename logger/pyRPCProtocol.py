@@ -554,7 +554,8 @@ while 1:
     else:
         if last_sample_time_unix+SAMPLE_DATA_INTERVAL_s < round(time.time()):
             print("sampling waveforms")
-            proto.call("acquire_sample_data",{})
+            result = proto.call("acquire_sample_data",{})
+            print(result)
             sample_data_complete = 0
             while sample_data_complete == 0:
                 time.sleep(0.5)
