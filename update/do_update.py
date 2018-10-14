@@ -69,6 +69,9 @@ else:
         if service_name in list_of_current_services:
             print("copy file: "+LOCAL_SERVICE_DIRECTORY+'/'+service_name+' to '+ SERVICE_TARGET+service_name)
             subprocess.call('echo $MY_PASSWORD | sudo -S cp '+LOCAL_SERVICE_DIRECTORY+'/'+service_name+' '+ SERVICE_TARGET+service_name, shell=True)
+            
+            subprocess.call('echo $MY_PASSWORD | sudo -S systemctl daemon-reload', shell=True)
+            
         print("enabling service: "+service_name)
         subprocess.call('echo $MY_PASSWORD | sudo -S systemctl enable '+ service_name, shell=True)
         

@@ -6,7 +6,7 @@ from datetime import datetime
 import requests
 from subprocess import call
   
-DB_NAME = 'enerlyzer_logger'
+DB_NAME = 'enerlyzer'
 START_UP_TIMEOUT = 5*60
 
 def is_influx_failing():
@@ -22,6 +22,7 @@ def is_influx_failing():
         print(e.message)
         return False
 
+time.sleep(30)
 while True:
     if is_influx_failing():
         print('influxdb could not connect')
