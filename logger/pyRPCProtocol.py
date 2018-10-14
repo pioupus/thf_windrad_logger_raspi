@@ -553,6 +553,7 @@ while 1:
         result = {}
     else:
         if last_sample_time_unix+SAMPLE_DATA_INTERVAL_s < round(time.time()):
+            print("sampling waveforms")
             proto.call("acquire_sample_data",{})
             sample_data_complete = 0
             while sample_data_complete == 0:
@@ -584,6 +585,7 @@ while 1:
                         row.append(csv_coloumn[col_index][row_index])
     
                     csv_sample_data_writer.writerow(row)
+                print("waveforms saved")
             last_sample_time_unix = round(time.time())
     time.sleep(0.5)
 
