@@ -456,15 +456,15 @@ while 1:
     raspi_temperature=raspi_temperature.split("'")[0]
     raspi_temperature= float(raspi_temperature)
     
-    raspi_memtotal = subprocess.Popen("cat /proc/meminfo | grep MemTotal",shell=True, stdout=subprocess.PIPE).stdout.read() # MemTotal:         949452 kB
+    raspi_memtotal = subprocess.Popen("cat /proc/meminfo | grep MemAvailable",shell=True, stdout=subprocess.PIPE).stdout.read() # MemAvailable:         949452 kB
     raspi_memtotal = raspi_memtotal.split()[1]
     raspi_memtotal = float(raspi_memtotal)
     
-    raspi_memfree = subprocess.Popen("cat /proc/meminfo | grep MemFree",shell=True, stdout=subprocess.PIPE).stdout.read() # MemFree:         949452 kB
-    raspi_memfree = raspi_memfree.split()[1]
-    raspi_memfree = float(raspi_memfree)
+    raspi_memavailable = subprocess.Popen("cat /proc/meminfo | grep MemFree",shell=True, stdout=subprocess.PIPE).stdout.read() # MemFree:         949452 kB
+    raspi_memavailable = raspi_memavailable.split()[1]
+    raspi_memavailable = float(raspi_memavailable)
 
-    raspi_memfree_percent=100.0*raspi_memfree/raspi_memtotal
+    raspi_memfree_percent=100.0*raspi_memavailable/raspi_memtotal
 
     protobuf_dataset = protobuf_logger_pb2.dataset()
     protobuf_dataset.logger_time =    float(logger_unix_time)
