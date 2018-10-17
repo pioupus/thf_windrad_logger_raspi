@@ -446,47 +446,47 @@ while 1:
     ext_current_sensor = ext_current_sensor/HALL_SENSOR_WINDUNGEN
    
     protobuf_dataset = protobuf_logger_pb2.dataset()
-    protobuf_dataset.logger_time =    logger_unix_time
-    protobuf_dataset.current_l1_avg = result["arguments"]["current_l1_avg"]
-    protobuf_dataset.current_l2_avg = result["arguments"]["current_l2_avg"]
-    protobuf_dataset.current_l3_avg = result["arguments"]["current_l3_avg"]
+    protobuf_dataset.logger_time =    float(logger_unix_time)
+    protobuf_dataset.current_l1_avg = float(result["arguments"]["current_l1_avg"])
+    protobuf_dataset.current_l2_avg = float(result["arguments"]["current_l2_avg"])
+    protobuf_dataset.current_l3_avg = float(result["arguments"]["current_l3_avg"])
     
-    protobuf_dataset.voltage_l21_avg = result["arguments"]["voltage_l21_avg"]
-    protobuf_dataset.voltage_l32_avg = result["arguments"]["voltage_l32_avg"]
-    protobuf_dataset.voltage_l13_avg = result["arguments"]["voltage_l13_avg"]
+    protobuf_dataset.voltage_l21_avg = float(result["arguments"]["voltage_l21_avg"])
+    protobuf_dataset.voltage_l32_avg = float(result["arguments"]["voltage_l32_avg"])
+    protobuf_dataset.voltage_l13_avg = float(result["arguments"]["voltage_l13_avg"])
     
-    protobuf_dataset.current_l1_eff = result["arguments"]["current_l1_eff"]
-    protobuf_dataset.current_l2_eff = result["arguments"]["current_l2_eff"]
-    protobuf_dataset.current_l3_eff = result["arguments"]["current_l3_eff"]
+    protobuf_dataset.current_l1_eff = float(result["arguments"]["current_l1_eff"])
+    protobuf_dataset.current_l2_eff = float(result["arguments"]["current_l2_eff"])
+    protobuf_dataset.current_l3_eff = float(result["arguments"]["current_l3_eff"])
 
-    protobuf_dataset.voltage_l21_eff = result["arguments"]["voltage_l21_eff"]
-    protobuf_dataset.voltage_l32_eff = result["arguments"]["voltage_l32_eff"]
-    protobuf_dataset.voltage_l13_eff = result["arguments"]["voltage_l13_eff"]
+    protobuf_dataset.voltage_l21_eff = float(result["arguments"]["voltage_l21_eff"])
+    protobuf_dataset.voltage_l32_eff = float(result["arguments"]["voltage_l32_eff"])
+    protobuf_dataset.voltage_l13_eff = float(result["arguments"]["voltage_l13_eff"])
     
-    protobuf_dataset.current_l1_max = result["arguments"]["current_l1_max"]
-    protobuf_dataset.current_l2_max = result["arguments"]["current_l2_max"]
-    protobuf_dataset.current_l3_max = result["arguments"]["current_l3_max"]
+    protobuf_dataset.current_l1_max = float(result["arguments"]["current_l1_max"])
+    protobuf_dataset.current_l2_max = float(result["arguments"]["current_l2_max"])
+    protobuf_dataset.current_l3_max = float(result["arguments"]["current_l3_max"])
     
-    protobuf_dataset.voltage_l21_max = result["arguments"]["voltage_l21_max"]
-    protobuf_dataset.voltage_l32_max = result["arguments"]["voltage_l32_max"]
-    protobuf_dataset.voltage_l13_max = result["arguments"]["voltage_l13_max"]
+    protobuf_dataset.voltage_l21_max = float(result["arguments"]["voltage_l21_max"])
+    protobuf_dataset.voltage_l32_max = float(result["arguments"]["voltage_l32_max"])
+    protobuf_dataset.voltage_l13_max = float(result["arguments"]["voltage_l13_max"])
 
-    protobuf_dataset.temperature_l1 = result["arguments"]["temperature_l1"]
-    protobuf_dataset.temperature_l2 = result["arguments"]["temperature_l2"]
-    protobuf_dataset.temperature_l3 = result["arguments"]["temperature_l3"]
+    protobuf_dataset.temperature_l1 = float(result["arguments"]["temperature_l1"])
+    protobuf_dataset.temperature_l2 = float(result["arguments"]["temperature_l2"])
+    protobuf_dataset.temperature_l3 = float(result["arguments"]["temperature_l3"])
     
-    protobuf_dataset.voltage_aux = result["arguments"]["voltage_aux"]
-    protobuf_dataset.frequency_Hz = result["arguments"]["frequency_Hz"]
-    protobuf_dataset.power = result["arguments"]["power"]
+    protobuf_dataset.voltage_aux = float(result["arguments"]["voltage_aux"])
+    protobuf_dataset.frequency_Hz = float(result["arguments"]["frequency_Hz"])
+    protobuf_dataset.power = float(result["arguments"]["power"])
     
-    protobuf_dataset.external_current_sensor = ext_current_sensor
-    protobuf_dataset.supply_voltage = result["arguments"]["supply_voltage"]
-    protobuf_dataset.cpu_temperature = result["arguments"]["cpu_temperature"]
-    protobuf_dataset.coin_cell_mv = result["arguments"]["coin_cell_mv"]
+    protobuf_dataset.external_current_sensor = float(ext_current_sensor)
+    protobuf_dataset.supply_voltage = float(result["arguments"]["supply_voltage"])
+    protobuf_dataset.cpu_temperature = float(result["arguments"]["cpu_temperature"])
+    protobuf_dataset.coin_cell_mv = float(result["arguments"]["coin_cell_mv"])
     
-    protobuf_dataset.used_storage_percent = storage_used_percent;
-    protobuf_dataset.energy_Wh = energy_Wh;
-    protobuf_dataset.energy_start = energy_acquisition_start;
+    protobuf_dataset.used_storage_percent = float(storage_used_percent)
+    protobuf_dataset.energy_Wh = float(energy_Wh)
+    protobuf_dataset.energy_start = float(energy_acquisition_start)
     
     
    
