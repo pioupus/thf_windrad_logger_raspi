@@ -15,6 +15,7 @@ from decimal import Decimal
 import os
 import csv
 import gzip
+import stream
 
 
 BROKER="broker.hivemq.com"
@@ -45,15 +46,25 @@ SAMPLE_CHANNEL_INDEXES = [
 
 SAMPLE_DATA_INTERVAL_s = 60*20
 SAMPLE_DATA_FOLDER = "/media/usbstick/sample_data/"
+PROTOBUF_DATA_FOLDER = "/media/usbstick/logger_data/"
 
 
 if not os.path.exists(SAMPLE_DATA_FOLDER):
     os.makedirs(SAMPLE_DATA_FOLDER)
 
+if not os.path.exists(PROTOBUF_DATA_FOLDER):
+    os.makedirs(PROTOBUF_DATA_FOLDER)
+    
 json_coeffs = {}
 with open('coeffs_smallest_error.json') as f:
     json_coeffs = json.load(f)
     
+def close_old_and_begin_new_stream(protobuf_out_stream):
+    if protobuf_out_stream ~= None:
+        protobuf_out_stream.close()
+    protobuf_out_stream = stream.open(PROTOBUF_DATA_FOLDER+datetime.utcnow().strftime('_%Y-%m-%dT%H_%M_%S.%f')+".proto.gz", 'ab')
+    return protobuf_out_stream
+
 def mqtt_result_numer_to_string(rc):
     if rc == 0:
         return "Connection successfull("+str(rc)+")"
@@ -305,26 +316,7 @@ mqtt_client.on_disconnect = mqtt_on_disconnect
 mqtt_client.on_connect = mqtt_on_connect
 
 my_env = os.environ.copy()    
-client = InfluxDBClient('localhost', 8086, 'influx_user', my_env["INFLUX_USER_PASSWORD"], INFLUX_DB_NAME)
-while True:
-    try:
-        json_body =     [{
-            "measurement": "test",
-            "time": datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f'),
-            "fields": {
-                "test":      123            
-            }
-        }]
-        client.write_points(json_body)
-        print("influx db successfully tested.")
-        break
-    except InfluxDBClientError as e:
-        if e.code == 404:
-            print("enerlyzer db does not exist. create one.")
-            client.create_database(INFLUX_DB_NAME)
-        else:
-            print("other error: "+str(e))
-
+   
         
 
 last_time_stamp = 0;
@@ -332,6 +324,11 @@ energy_Wh = 0.0
 energy_acquisition_start = 0;
 last_max_voltages = [0,0,0]
 last_max_currents = [0,0,0]
+
+last_logger_file_write_time_unix = round(time.time())
+
+protobuf_out_stream = close_old_and_begin_new_stream(None)
+    
 while 1:
     test_function_param = {"channel":3}
     start_time = time.clock()
@@ -447,92 +444,45 @@ while 1:
         ext_current_sensor = hall_sensor_coeffs[-1] + hall_sensor_coeffs[-2]*ext_current_sensor
         
     ext_current_sensor = ext_current_sensor/HALL_SENSOR_WINDUNGEN
-    json_body =     [{
-        "measurement": "powerdata",
-        "time": datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f'),
-        "fields": {
-            "logger_time":      logger_unix_time,
-            "current_l1_avg":  float(result["arguments"]["current_l1_avg"]),
-            "current_l2_avg":  float(result["arguments"]["current_l2_avg"]),
-            "current_l3_avg":  float(result["arguments"]["current_l3_avg"]),
-            
-            "voltage_l21_avg":  float(result["arguments"]["voltage_l21_avg"]),
-            "voltage_l32_avg":  float(result["arguments"]["voltage_l32_avg"]),
-            "voltage_l13_avg":  float(result["arguments"]["voltage_l13_avg"]),
-            
-            "current_l1_eff":  float(result["arguments"]["current_l1_eff"]),
-            "current_l2_eff":  float(result["arguments"]["current_l2_eff"]),
-            "current_l3_eff":  float(result["arguments"]["current_l3_eff"]),
-            
-            "voltage_l21_eff":  float(result["arguments"]["voltage_l21_eff"]),
-            "voltage_l32_eff":  float(result["arguments"]["voltage_l32_eff"]),
-            "voltage_l13_eff":  float(result["arguments"]["voltage_l13_eff"]),
-
-            "current_l1_max":  float(result["arguments"]["current_l1_max"]),
-            "current_l2_max":  float(result["arguments"]["current_l2_max"]),
-            "current_l3_max":  float(result["arguments"]["current_l3_max"]),
-            
-            "voltage_l21_max":  float(result["arguments"]["voltage_l21_max"]),
-            "voltage_l32_max":  float(result["arguments"]["voltage_l32_max"]),
-            "voltage_l13_max":  float(result["arguments"]["voltage_l13_max"]),
-            
-            "temperature_l1":  float(result["arguments"]["temperature_l1"]),
-            "temperature_l2":  float(result["arguments"]["temperature_l2"]),
-            "temperature_l3":  float(result["arguments"]["temperature_l3"]),
-            
-            "voltage_aux":  float(result["arguments"]["voltage_aux"]),
-            
-            "frequency_Hz":  float(result["arguments"]["frequency_Hz"]),
-            "power":  float(result["arguments"]["power"]),
-            "external_current_sensor":  float(ext_current_sensor),
-            
-            "supply_voltage":  float(result["arguments"]["supply_voltage"]),
-            "cpu_temperature":  float(result["arguments"]["cpu_temperature"]),
-            "coin_cell_mv":  float(result["arguments"]["coin_cell_mv"])      ,
-            "energy_Wh": energy_Wh,
-            "energy_start": energy_acquisition_start
-            
-        }
-    }]
-        
+   
     protobuf_dataset = protobuf_logger_pb2.dataset()
-    protobuf_dataset.logger_time =    json_body[0]["fields"]["logger_time"]
-    protobuf_dataset.current_l1_avg = json_body[0]["fields"]["current_l1_avg"]
-    protobuf_dataset.current_l2_avg = json_body[0]["fields"]["current_l2_avg"]
-    protobuf_dataset.current_l3_avg = json_body[0]["fields"]["current_l3_avg"]
+    protobuf_dataset.logger_time =    logger_unix_time
+    protobuf_dataset.current_l1_avg = result["arguments"]["current_l1_avg"]
+    protobuf_dataset.current_l2_avg = result["arguments"]["current_l2_avg"]
+    protobuf_dataset.current_l3_avg = result["arguments"]["current_l3_avg"]
     
-    protobuf_dataset.voltage_l21_avg = json_body[0]["fields"]["voltage_l21_avg"]
-    protobuf_dataset.voltage_l32_avg = json_body[0]["fields"]["voltage_l32_avg"]
-    protobuf_dataset.voltage_l13_avg = json_body[0]["fields"]["voltage_l13_avg"]
+    protobuf_dataset.voltage_l21_avg = result["arguments"]["voltage_l21_avg"]
+    protobuf_dataset.voltage_l32_avg = result["arguments"]["voltage_l32_avg"]
+    protobuf_dataset.voltage_l13_avg = result["arguments"]["voltage_l13_avg"]
     
-    protobuf_dataset.current_l1_eff = json_body[0]["fields"]["current_l1_eff"]
-    protobuf_dataset.current_l2_eff = json_body[0]["fields"]["current_l2_eff"]
-    protobuf_dataset.current_l3_eff = json_body[0]["fields"]["current_l3_eff"]
+    protobuf_dataset.current_l1_eff = result["arguments"]["current_l1_eff"]
+    protobuf_dataset.current_l2_eff = result["arguments"]["current_l2_eff"]
+    protobuf_dataset.current_l3_eff = result["arguments"]["current_l3_eff"]
 
-    protobuf_dataset.voltage_l21_eff = json_body[0]["fields"]["voltage_l21_eff"]
-    protobuf_dataset.voltage_l32_eff = json_body[0]["fields"]["voltage_l32_eff"]
-    protobuf_dataset.voltage_l13_eff = json_body[0]["fields"]["voltage_l13_eff"]
+    protobuf_dataset.voltage_l21_eff = result["arguments"]["voltage_l21_eff"]
+    protobuf_dataset.voltage_l32_eff = result["arguments"]["voltage_l32_eff"]
+    protobuf_dataset.voltage_l13_eff = result["arguments"]["voltage_l13_eff"]
     
-    protobuf_dataset.current_l1_max = json_body[0]["fields"]["current_l1_max"]
-    protobuf_dataset.current_l2_max = json_body[0]["fields"]["current_l2_max"]
-    protobuf_dataset.current_l3_max = json_body[0]["fields"]["current_l3_max"]
+    protobuf_dataset.current_l1_max = result["arguments"]["current_l1_max"]
+    protobuf_dataset.current_l2_max = result["arguments"]["current_l2_max"]
+    protobuf_dataset.current_l3_max = result["arguments"]["current_l3_max"]
     
-    protobuf_dataset.voltage_l21_max = json_body[0]["fields"]["voltage_l21_max"]
-    protobuf_dataset.voltage_l32_max = json_body[0]["fields"]["voltage_l32_max"]
-    protobuf_dataset.voltage_l13_max = json_body[0]["fields"]["voltage_l13_max"]
+    protobuf_dataset.voltage_l21_max = result["arguments"]["voltage_l21_max"]
+    protobuf_dataset.voltage_l32_max = result["arguments"]["voltage_l32_max"]
+    protobuf_dataset.voltage_l13_max = result["arguments"]["voltage_l13_max"]
 
-    protobuf_dataset.temperature_l1 = json_body[0]["fields"]["temperature_l1"]
-    protobuf_dataset.temperature_l2 = json_body[0]["fields"]["temperature_l2"]
-    protobuf_dataset.temperature_l3 = json_body[0]["fields"]["temperature_l3"]
+    protobuf_dataset.temperature_l1 = result["arguments"]["temperature_l1"]
+    protobuf_dataset.temperature_l2 = result["arguments"]["temperature_l2"]
+    protobuf_dataset.temperature_l3 = result["arguments"]["temperature_l3"]
     
-    protobuf_dataset.voltage_aux = json_body[0]["fields"]["voltage_aux"]
-    protobuf_dataset.frequency_Hz = json_body[0]["fields"]["frequency_Hz"]
-    protobuf_dataset.power = json_body[0]["fields"]["power"]
+    protobuf_dataset.voltage_aux = result["arguments"]["voltage_aux"]
+    protobuf_dataset.frequency_Hz = result["arguments"]["frequency_Hz"]
+    protobuf_dataset.power = result["arguments"]["power"]
     
-    protobuf_dataset.external_current_sensor = json_body[0]["fields"]["external_current_sensor"]
-    protobuf_dataset.supply_voltage = json_body[0]["fields"]["supply_voltage"]
-    protobuf_dataset.cpu_temperature = json_body[0]["fields"]["cpu_temperature"]
-    protobuf_dataset.coin_cell_mv = json_body[0]["fields"]["coin_cell_mv"]
+    protobuf_dataset.external_current_sensor = ext_current_sensor
+    protobuf_dataset.supply_voltage = result["arguments"]["supply_voltage"]
+    protobuf_dataset.cpu_temperature = result["arguments"]["cpu_temperature"]
+    protobuf_dataset.coin_cell_mv = result["arguments"]["coin_cell_mv"]
     
     protobuf_dataset.used_storage_percent = storage_used_percent;
     protobuf_dataset.energy_Wh = energy_Wh;
@@ -540,7 +490,12 @@ while 1:
     
     
    
-    client.write_points(json_body)
+    protobuf_out_stream.write(*protobuf_dataset)
+    
+    
+    if close_old_and_begin_new_stream+SAMPLE_DATA_INTERVAL_s < round(time.time()):
+        close_old_and_begin_new_stream(protobuf_out_stream)
+    last_logger_file_write_time_unix = round(time.time())
     
     mqtt_publish_result = mqtt_client.publish("enerlyzer/live/pwr", protobuf_dataset.SerializeToString(), qos=2)
     if mqtt_publish_result.rc == mqtt.MQTT_ERR_NO_CONN:
