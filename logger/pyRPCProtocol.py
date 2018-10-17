@@ -60,7 +60,7 @@ with open('coeffs_smallest_error.json') as f:
     json_coeffs = json.load(f)
     
 def close_old_and_begin_new_stream(protobuf_out_stream):
-    if protobuf_out_stream ~= None:
+    if protobuf_out_stream != None:
         protobuf_out_stream.close()
     protobuf_out_stream = stream.open(PROTOBUF_DATA_FOLDER+datetime.utcnow().strftime('_%Y-%m-%dT%H_%M_%S.%f')+".proto.gz", 'ab')
     return protobuf_out_stream
