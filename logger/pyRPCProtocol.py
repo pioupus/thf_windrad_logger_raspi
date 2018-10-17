@@ -493,7 +493,7 @@ while 1:
     protobuf_out_stream.write(protobuf_dataset)
     
     
-    if close_old_and_begin_new_stream+SAMPLE_DATA_INTERVAL_s < round(time.time()):
+    if last_logger_file_write_time_unix+SAMPLE_DATA_INTERVAL_s < round(time.time()):
         close_old_and_begin_new_stream(protobuf_out_stream)
     last_logger_file_write_time_unix = round(time.time())
     
