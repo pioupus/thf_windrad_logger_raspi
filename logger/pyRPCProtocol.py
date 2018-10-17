@@ -46,6 +46,8 @@ SAMPLE_CHANNEL_INDEXES = [
 
 SAMPLE_DATA_INTERVAL_s = 60*20
 SAMPLE_DATA_FOLDER = "/media/usbstick/sample_data/"
+
+LOGGER_DATA_WRITE_INTERVAL_s = 60*10
 PROTOBUF_DATA_FOLDER = "/media/usbstick/logger_data/"
 
 
@@ -62,7 +64,7 @@ with open('coeffs_smallest_error.json') as f:
 def close_old_and_begin_new_stream(protobuf_out_stream):
     if protobuf_out_stream != None:
         protobuf_out_stream.close()
-    protobuf_out_stream = stream.open(PROTOBUF_DATA_FOLDER+datetime.utcnow().strftime('_%Y-%m-%dT%H_%M_%S.%f')+".proto.gz", 'ab')
+    protobuf_out_stream = stream.open(PROTOBUF_DATA_FOLDER+datetime.utcnow().strftime('%Y-%m-%dT%H_%M_%S')+".proto.gz", 'ab')
     return protobuf_out_stream
 
 def mqtt_result_numer_to_string(rc):
@@ -493,8 +495,8 @@ while 1:
     protobuf_out_stream.write(protobuf_dataset)
     
     
-    if last_logger_file_write_time_unix+SAMPLE_DATA_INTERVAL_s < round(time.time()):
-        close_old_and_begin_new_stream(protobuf_out_stream)
+    if last_logger_file_write_time_unix+LOGGER_DATA_WRITE_INTERVAL_s < round(time.time()):
+        protobuf_out_stream = close_old_and_begin_new_stream(protobuf_out_stream)
     last_logger_file_write_time_unix = round(time.time())
     
     mqtt_publish_result = mqtt_client.publish("enerlyzer/live/pwr", protobuf_dataset.SerializeToString(), qos=2)
