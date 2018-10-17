@@ -1,7 +1,6 @@
 #!/usr/bin/env python 
 import subprocess
-from influxdb import InfluxDBClient
-from influxdb.exceptions import InfluxDBClientError
+
 import time
 import os
 import json
@@ -447,6 +446,26 @@ while 1:
         
     ext_current_sensor = ext_current_sensor/HALL_SENSOR_WINDUNGEN
    
+   
+    raspi_throttled= subprocess.Popen("vcgencmd get_throttled",shell=True, stdout=subprocess.PIPE).stdout.read() # throttled=0x0
+    raspi_throttled=raspi_throttled.split("=")[1]
+    raspi_throttled=int(raspi_throttled, 0)
+    
+    raspi_temperature= subprocess.Popen("vcgencmd measure_temp",shell=True, stdout=subprocess.PIPE).stdout.read() # temp=48.3'C
+    raspi_temperature=raspi_temperature.split("=")[1]
+    raspi_temperature=raspi_temperature.split("'")[0]
+    raspi_temperature= float(raspi_temperature)
+    
+    raspi_memtotal = subprocess.Popen("cat /proc/meminfo | grep MemTotal",shell=True, stdout=subprocess.PIPE).stdout.read() # MemTotal:         949452 kB
+    raspi_memtotal = raspi_memtotal.split()[1]
+    raspi_memtotal = float(raspi_memtotal)
+    
+    raspi_memfree = subprocess.Popen("cat /proc/meminfo | grep MemFree",shell=True, stdout=subprocess.PIPE).stdout.read() # MemFree:         949452 kB
+    raspi_memfree = raspi_memfree.split()[1]
+    raspi_memfree = float(raspi_memfree)
+
+    raspi_memfree_percent=100.0*raspi_memfree/raspi_memtotal
+
     protobuf_dataset = protobuf_logger_pb2.dataset()
     protobuf_dataset.logger_time =    float(logger_unix_time)
     protobuf_dataset.current_l1_avg = float(result["arguments"]["current_l1_avg"])
@@ -489,7 +508,15 @@ while 1:
     protobuf_dataset.used_storage_percent = float(storage_used_percent)
     protobuf_dataset.energy_Wh = float(energy_Wh)
     protobuf_dataset.energy_start = float(energy_acquisition_start)
+    protobuf_dataset.raspberry_temp_c = float(raspi_temperature)
+    protobuf_dataset.raspberry_mem_free_percent = float(raspi_memfree_percent)
     
+    protobuf_dataset.raspberry_under_voltage               =    (raspi_throttled & 0x00001) > 0;
+    protobuf_dataset.raspberry_frequency_capped            =    (raspi_throttled & 0x00002) > 0
+    protobuf_dataset.raspberry_currently_throttled         =    (raspi_throttled & 0x00004) > 0
+    protobuf_dataset.raspberry_under_voltage_has_occurred  =    (raspi_throttled & 0x10000) > 0
+    protobuf_dataset.raspberry_frequency_capped_has_occurred =  (raspi_throttled & 0x20000) > 0
+    protobuf_dataset.raspberry_throttling_has_occurred     =    (raspi_throttled & 0x40000) > 0
     
    
     protobuf_out_stream.write(protobuf_dataset)
@@ -497,7 +524,7 @@ while 1:
     
     if last_logger_file_write_time_unix+LOGGER_DATA_WRITE_INTERVAL_s < round(time.time()):
         protobuf_out_stream = close_old_and_begin_new_stream(protobuf_out_stream)
-    last_logger_file_write_time_unix = round(time.time())
+        last_logger_file_write_time_unix = round(time.time())
     
     mqtt_publish_result = mqtt_client.publish("enerlyzer/live/pwr", protobuf_dataset.SerializeToString(), qos=2)
     if mqtt_publish_result.rc == mqtt.MQTT_ERR_NO_CONN:
