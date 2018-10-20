@@ -23,3 +23,11 @@ to ~/bashrc
 - clone this repository using git clone https://github.com/pioupus/thf_windrad_logger_raspi.git
 - cd thf_windrad_logger/update/
 - execute ./run_run_once.py
+
+create and copy the ssh key to remote backup server for rsync via ssh:
+ --ssh-
+
+- ssh-keygen -f ~/.ssh/server_enerlyzer_receiver
+- ssh-copy-id -i ~/.ssh/server_enerlyzer_receiver enerlyzer_receiver@62.113.246.9
+- eval `ssh-agent -s`
+- ssh-add ~/.ssh/server_enerlyzer_receiver

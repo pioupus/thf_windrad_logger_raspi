@@ -281,6 +281,9 @@ print("using THF_LOGGER_RPC_XML "+my_env["THF_LOGGER_RPC_XML"])
 print("using db: "+INFLUX_DB_NAME)
 last_sample_time_unix = 0
 
+RASPI_IMAGE_GIT_HASH= subprocess.Popen('git log -1 --format="format:0x%h"',shell=True,stdout=subprocess.PIPE).stdout.read() # 0x0d9b264
+RASPI_IMAGE_GIT_HASH=int(RASPI_IMAGE_GIT_HASH, 0)
+    
 SIMULATE_RPC = 0
 if not SIMULATE_RPC:
     proto = RPCProtocol(my_env["THF_LOGGER_SERIAL"],my_env["THF_LOGGER_BAUD"],my_env["THF_LOGGER_RPC_XML"])
@@ -445,8 +448,9 @@ while 1:
         ext_current_sensor = hall_sensor_coeffs[-1] + hall_sensor_coeffs[-2]*ext_current_sensor
         
     ext_current_sensor = ext_current_sensor/HALL_SENSOR_WINDUNGEN
-   
-   
+
+
+  
     raspi_throttled= subprocess.Popen("vcgencmd get_throttled",shell=True, stdout=subprocess.PIPE).stdout.read() # throttled=0x0
     raspi_throttled=raspi_throttled.split("=")[1]
     raspi_throttled=int(raspi_throttled, 0)
@@ -517,7 +521,7 @@ while 1:
     protobuf_dataset.raspberry_under_voltage_has_occurred  =    (raspi_throttled & 0x10000) > 0
     protobuf_dataset.raspberry_frequency_capped_has_occurred =  (raspi_throttled & 0x20000) > 0
     protobuf_dataset.raspberry_throttling_has_occurred     =    (raspi_throttled & 0x40000) > 0
-    
+    protobuf_dataset.current_git_hash = RASPI_IMAGE_GIT_HASH
    
     protobuf_out_stream.write(protobuf_dataset)
     
