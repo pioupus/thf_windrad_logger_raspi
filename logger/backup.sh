@@ -6,7 +6,7 @@ SOURCES=(/media/usbstick/sample_data /media/usbstick/logger_data )
 TARGET="/home/enerlyzer_receiver/logger_backup"
 
 # edit or comment with "#"
-#LISTPACKAGES=listdebianpackages        # local-mode and tossh-mode
+LISTPACKAGES=listdebianpackages        # local-mode and tossh-mode
 MONTHROTATE=monthrotate                 # use DD instead of YYMMDD
 
 RSYNCCONF=(--delete)
@@ -17,6 +17,8 @@ SSHUSER="enerlyzer_receiver"
 #FROMSSH="fromssh-server"
 TOSSH="62.113.246.9"
 SSHPORT=22
+
+
 
 ### do not edit ###
 
