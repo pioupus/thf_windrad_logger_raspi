@@ -81,8 +81,8 @@ if [ -z "$MOUNTPOINT" ] || [ "$MOUNTED" ]; then
   done
 
   if [ "$S" ] && [ "$TOSSH" ] && [ -z "$FROMSSH" ]; then
-    $ECHO "$SSH -p $SSHPORT -l $SSHUSER $TOSSH $LN -nsf $TARGET$TODAY $TARGET$LAST" >> $LOG  
-    $SSH -p $SSHPORT -l $SSHUSER $TOSSH "$LN -nsf \"$TARGET\"$TODAY \"$TARGET\"$LAST" >> $LOG 2>&1
+    $ECHO "$SSH -p $SSHPORT -i $SSH_KEYFILE -l $SSHUSER $TOSSH $LN -nsf $TARGET$TODAY $TARGET$LAST" >> $LOG  
+    $SSH -p $SSHPORT -i $SSH_KEYFILE -l $SSHUSER $TOSSH "$LN -nsf \"$TARGET\"$TODAY \"$TARGET\"$LAST" >> $LOG 2>&1
     if [ $? -ne 0 ]; then
       ERROR=1
     fi 
