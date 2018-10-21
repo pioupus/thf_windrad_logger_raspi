@@ -13,6 +13,8 @@ to ~/logger.env where xxx is your ssh sudo password
 
 - add the line 
 ```
+eval `ssh-agent -s`
+ssh-add ~/.ssh/server_enerlyzer_receiver
 set -a; source /home/pi/logger.env; set +a
 ```
 
@@ -28,6 +30,3 @@ create and copy the ssh key to remote backup server for rsync via ssh:
  --ssh-
 
 - ssh-keygen -f ~/.ssh/server_enerlyzer_receiver
-- ssh-copy-id -i ~/.ssh/server_enerlyzer_receiver enerlyzer_receiver@62.113.246.9
-- eval `ssh-agent -s`
-- ssh-add ~/.ssh/server_enerlyzer_receiver

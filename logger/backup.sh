@@ -17,7 +17,7 @@ SSHUSER="enerlyzer_receiver"
 #FROMSSH="fromssh-server"
 TOSSH="62.113.246.9"
 SSHPORT=22
-
+SSH_KEYFILE=/home/pi/.ssh/server_enerlyzer_receiver
 
 
 ### do not edit ###
@@ -52,7 +52,7 @@ if [ -z "$MOUNTPOINT" ] || [ "$MOUNTED" ]; then
   fi
 
   if [ "$SSHUSER" ] && [ "$SSHPORT" ]; then
-    S="$SSH -p $SSHPORT -l $SSHUSER";
+    S="$SSH -p $SSHPORT -i $SSH_KEYFILE -l $SSHUSER";
   fi
 
   for SOURCE in "${SOURCES[@]}"
