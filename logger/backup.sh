@@ -9,7 +9,7 @@ TARGET="/home/enerlyzer_receiver/logger_backup"
 LISTPACKAGES=listdebianpackages        # local-mode and tossh-mode
 MONTHROTATE=monthrotate                 # use DD instead of YYMMDD
 
-RSYNCCONF=(--delete)
+RSYNCCONF=()
 #MOUNTPOINT="/media/daten"               # check local mountpoint
 #MAILREC="user@domain"
 
