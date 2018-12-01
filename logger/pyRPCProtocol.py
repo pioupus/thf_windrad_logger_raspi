@@ -542,24 +542,33 @@ while 1:
     else:
         if last_sample_time_unix+SAMPLE_DATA_INTERVAL_s < round(time.time()):
             print("sampling waveforms")
+            chunk_count = proto.call("get_sample_chunk_count",{})["arguments"]
+            chunk_count = int(chunk_count,0)
+            #print(chunk_count)
             result = proto.call("acquire_sample_data",{})
             #print(result)
-            #sample_data_complete = 0
-            #while sample_data_complete == 0:
-            #    time.sleep(0.5)
-            #    sample_data_complete = proto.call("is_sample_data_complete",{})["arguments"]
-            #    print(sample_data_complete)
+            sample_data_complete = 0
+            while sample_data_complete == 0:
+                time.sleep(0.5)
+                sample_data_complete = proto.call("is_sample_data_complete",{})["arguments"]
+                print(sample_data_complete)
 
             csv_coloumn = []
             sample_time_stamp_unix = 0;
             sample_time_stamp_subseconds = 0;
             for channel in SAMPLE_CHANNEL_INDEXES:
+                result = proto.call("reset_sample_data_readpointer",{})
                 set_calibration_arguments = {}
                 set_calibration_arguments["channel"] = channel
-                result = proto.call("get_sample_data",set_calibration_arguments)["arguments"]
-                csv_coloumn.append(result["sample"])
-                sample_time_stamp_unix=  result["unix_time"]
-                sample_time_stamp_subseconds=  result["sub_seconds"]
+                #result = proto.call("get_sample_data",set_calibration_arguments)["arguments"]
+                
+                
+                for i = in range(chunk_count):
+                    #samples = thf_logger:get_sample_data(3).sample
+                    result = proto.call("get_sample_data",set_calibration_arguments)["arguments"]
+                    csv_coloumn.append(result["sample"])
+                    sample_time_stamp_unix=  result["unix_time"]
+                    sample_time_stamp_subseconds=  result["sub_seconds"]
 
             filename = str(sample_time_stamp_unix)+"_"+str(sample_time_stamp_subseconds).zfill(3)+datetime.utcnow().strftime('_%Y-%m-%dT%H_%M_%S.%f')+".csv.gz"
             with gzip.open(SAMPLE_DATA_FOLDER+filename, 'wb') as zipped_file:
