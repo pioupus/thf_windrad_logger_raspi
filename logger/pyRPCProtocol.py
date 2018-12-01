@@ -544,7 +544,7 @@ while 1:
             print("sampling waveforms")
             chunk_count = proto.call("get_sample_chunk_count",{})["arguments"]
             print(chunk_count)
-            chunk_count = int(chunk_count,0)
+            chunk_count = int(chunk_count)
             #print(chunk_count)
             result = proto.call("acquire_sample_data",{})
             #print(result)
