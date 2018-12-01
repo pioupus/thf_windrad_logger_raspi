@@ -563,7 +563,7 @@ while 1:
                 #result = proto.call("get_sample_data",set_calibration_arguments)["arguments"]
                 
                 
-                for i = in range(chunk_count):
+                for i in range(chunk_count):
                     #samples = thf_logger:get_sample_data(3).sample
                     result = proto.call("get_sample_data",set_calibration_arguments)["arguments"]
                     csv_coloumn.append(result["sample"])
