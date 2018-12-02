@@ -563,13 +563,14 @@ while 1:
                 set_calibration_arguments["channel"] = channel
                 #result = proto.call("get_sample_data",set_calibration_arguments)["arguments"]
                 
-                
+                current_column = []
                 for i in range(chunk_count):
                     #samples = thf_logger:get_sample_data(3).sample
                     result = proto.call("get_sample_data",set_calibration_arguments)["arguments"]
-                    csv_coloumn.append(result["sample"])
+                    current_column += result["sample"]
                     sample_time_stamp_unix=  result["unix_time"]
                     sample_time_stamp_subseconds=  result["sub_seconds"]
+                csv_coloumn.append(current_column)
 
             filename = str(sample_time_stamp_unix)+"_"+str(sample_time_stamp_subseconds).zfill(3)+datetime.utcnow().strftime('_%Y-%m-%dT%H_%M_%S.%f')+".csv.gz"
             with gzip.open(SAMPLE_DATA_FOLDER+filename, 'wb') as zipped_file:
