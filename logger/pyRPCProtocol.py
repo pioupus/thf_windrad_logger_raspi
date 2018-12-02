@@ -570,7 +570,7 @@ while 1:
                     current_column += result["sample"]
                     sample_time_stamp_unix=  result["unix_time"]
                     sample_time_stamp_subseconds=  result["sub_seconds"]
-                    time.sleep(0.1)
+                    time.sleep(0.01)
                 csv_coloumn.append(current_column)
 
             filename = str(sample_time_stamp_unix)+"_"+str(sample_time_stamp_subseconds).zfill(3)+datetime.utcnow().strftime('_%Y-%m-%dT%H_%M_%S.%f')+".csv.gz"
