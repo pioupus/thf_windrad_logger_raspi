@@ -12,6 +12,7 @@ LOCAL_SERVICE_DIRECTORY = "../etc/systemd/system"
 SERVICE_TARGET = "/etc/systemd/system/"
 #SERVICE_TARGET = "~/test/systemd/system/"
 
+
 def get_services_in_local_folder(list_of_current_services):
     for filename in os.listdir(LOCAL_SERVICE_DIRECTORY):
         if filename.endswith(".service"):
@@ -25,8 +26,20 @@ def get_services_in_local_folder(list_of_current_services):
 
 
 
+my_env = os.environ.copy()
+git_branch = "master"
+try:
+    git_branch = my_env["GIT_BRANCH"]
+    print("using GIT_BRANCH "+git_branch)  
+    if git_branch == "" or git_branch == None:
+        git_branch =  "master"
+except KeyError, e:
+    git_branch = "master"
+    
+    
 subprocess.Popen("git fetch", shell=True,stdout=subprocess.PIPE).stdout.read()
-git_commits_newer_than_local = subprocess.Popen("git log HEAD..origin/master", shell=True,stdout=subprocess.PIPE).stdout.read()
+subprocess.Popen("git checkout "+git_branch, shell=True,stdout=subprocess.PIPE).stdout.read()
+git_commits_newer_than_local = subprocess.Popen("git log HEAD..origin/"+git_branch, shell=True,stdout=subprocess.PIPE).stdout.read()
 print(git_commits_newer_than_local)
 
 #git_commits_newer_than_local = "test"
@@ -54,7 +67,7 @@ else:
         subprocess.call('echo $MY_PASSWORD | sudo -S systemctl stop '+ service_name, shell=True)
         
     
-    git_pull_output = subprocess.Popen("git pull", shell=True,stdout=subprocess.PIPE).stdout.read()
+    git_pull_output = subprocess.Popen("git pull origin "+git_branch, shell=True,stdout=subprocess.PIPE).stdout.read()
     print("git pull:\n"+git_pull_output)
     if ENABLE_RUN_ONCE:
         run_once_file_output = subprocess.Popen('python run_run_once_files.py', shell=True,stdout=subprocess.PIPE).stdout.read()

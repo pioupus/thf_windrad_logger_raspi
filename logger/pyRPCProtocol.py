@@ -17,7 +17,32 @@ import gzip
 import stream
 
 
-BROKER="broker.hivemq.com"
+BROKER_DEFAULT = "broker.hivemq.com"
+BROKER = BROKER_DEFAULT
+
+MQTT_TOPIC_DEFAULT = "enerlyzer/live/pwr"
+MQTT_TOPIC = MQTT_TOPIC_DEFAULT
+
+
+
+my_env = os.environ.copy()
+try:
+    BROKER = my_env["MQTT_BROKER_HOST"]
+    if BROKER == "" or BROKER == None:
+        BROKER =  BROKER_DEFAULT
+except KeyError, e:
+    BROKER = BROKER_DEFAULT
+    
+    
+try:
+    MQTT_TOPIC = my_env["MQTT_TOPIC"]
+    if MQTT_TOPIC == "" or MQTT_TOPIC == None:
+        MQTT_TOPIC =  MQTT_TOPIC_DEFAULT
+except KeyError, e:
+    MQTT_TOPIC = MQTT_TOPIC_DEFAULT
+    
+
+
 INFLUX_DB_NAME = "enerlyzer"+datetime.now().strftime("%Y_%m-%d_%H_%M_%S")
 CHANNEL_NAME_INDEXES = [
     "adc_value_curr_l1",
@@ -95,7 +120,7 @@ def mqtt_on_disconnect(client, userdata, flags, rc):
     client.reconnect()
      
 def mqtt_on_connect(client, userdata, flags, rc):
-    print("MQTT connected. Result: "+mqtt_result_numer_to_string(rc))  
+    print("MQTT connected. Result: "+mgit_branch = "master"qtt_result_numer_to_string(rc))  
      
 class RPCProtocol:
     def __init__(self, comport_path, baud, xml_search_dir):
@@ -530,7 +555,7 @@ while 1:
         protobuf_out_stream = close_old_and_begin_new_stream(protobuf_out_stream, RASPI_IMAGE_GIT_HASH)
         last_logger_file_write_time_unix = round(time.time())
     
-    mqtt_publish_result = mqtt_client.publish("enerlyzer/live/pwr", protobuf_dataset.SerializeToString(), qos=2)
+    mqtt_publish_result = mqtt_client.publish(MQTT_TOPIC, protobuf_dataset.SerializeToString(), qos=2)
     if mqtt_publish_result.rc == mqtt.MQTT_ERR_NO_CONN:
         print("MQTT publish result: "+str(mqtt_publish_result))
         print("failed to publish MQTT. reconnect..")
