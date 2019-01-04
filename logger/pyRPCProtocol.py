@@ -120,7 +120,7 @@ def mqtt_on_disconnect(client, userdata, flags, rc):
     client.reconnect()
      
 def mqtt_on_connect(client, userdata, flags, rc):
-    print("MQTT connected. Result: "+mgit_branch = "master"qtt_result_numer_to_string(rc))  
+    print("MQTT connected. Result: "+mqtt_result_numer_to_string(rc)))  
      
 class RPCProtocol:
     def __init__(self, comport_path, baud, xml_search_dir):
