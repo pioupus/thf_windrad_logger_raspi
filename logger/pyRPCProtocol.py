@@ -312,7 +312,7 @@ print("using THF_LOGGER_RPC_XML "+my_env["THF_LOGGER_RPC_XML"])
 print("using MQTT_TOPIC: "+MQTT_TOPIC)
 print("using MQTT_HOST: "+BROKER)
 print("using git_branch: "+git_branch)
-
+#
 last_sample_time_unix = 0
 
 RASPI_IMAGE_GIT_HASH= subprocess.Popen('git log -1 --format="format:0x%h"',shell=True,stdout=subprocess.PIPE).stdout.read() # 0x0d9b264
