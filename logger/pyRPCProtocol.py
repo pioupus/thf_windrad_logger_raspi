@@ -41,9 +41,15 @@ try:
 except KeyError, e:
     MQTT_TOPIC = MQTT_TOPIC_DEFAULT
     
-
-
-INFLUX_DB_NAME = "enerlyzer"+datetime.now().strftime("%Y_%m-%d_%H_%M_%S")
+git_branch = "master"
+try:
+    git_branch = my_env["GIT_BRANCH"]
+    print("using GIT_BRANCH "+git_branch)  
+    if git_branch == "" or git_branch == None:
+        git_branch =  "master"
+except KeyError, e:
+    git_branch = "master"
+    
 CHANNEL_NAME_INDEXES = [
     "adc_value_curr_l1",
     "adc_value_curr_l2",
@@ -303,7 +309,10 @@ my_env = os.environ.copy()
 print("using THF_LOGGER_SERIAL "+my_env["THF_LOGGER_SERIAL"])  
 print("using THF_LOGGER_BAUD "+my_env["THF_LOGGER_BAUD"])  
 print("using THF_LOGGER_RPC_XML "+my_env["THF_LOGGER_RPC_XML"])  
-print("using db: "+INFLUX_DB_NAME)
+print("using MQTT_TOPIC: "+MQTT_TOPIC)
+print("using MQTT_HOST: "+MQTT_BROKER_HOST)
+print("using git_branch: "+git_branch)
+
 last_sample_time_unix = 0
 
 RASPI_IMAGE_GIT_HASH= subprocess.Popen('git log -1 --format="format:0x%h"',shell=True,stdout=subprocess.PIPE).stdout.read() # 0x0d9b264
@@ -598,7 +607,7 @@ while 1:
                     time.sleep(0.01)
                 csv_coloumn.append(current_column)
 
-            filename = str(sample_time_stamp_unix)+"_"+str(sample_time_stamp_subseconds).zfill(3)+datetime.utcnow().strftime('_%Y-%m-%dT%H_%M_%S.%f')+".csv.gz"
+            filename = git_branch+"_"+str(sample_time_stamp_unix)+"_"+str(sample_time_stamp_subseconds).zfill(3)+datetime.utcnow().strftime('_%Y-%m-%dT%H_%M_%S.%f')+".csv.gz"
             with gzip.open(SAMPLE_DATA_FOLDER+filename, 'wb') as zipped_file:
                 csv_sample_data_writer = csv.writer(zipped_file, delimiter=';',quotechar='|', quoting=csv.QUOTE_MINIMAL)
                 row = []
