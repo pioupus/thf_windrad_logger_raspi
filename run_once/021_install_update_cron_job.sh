@@ -2,7 +2,7 @@
  
 #croncmd_update="python /home/pi/thf_windrad_logger_raspi/update/do_update.py > /media/usbstick/logger_data/update_cron_log.log 2>&1"
 
-croncmd_backup="/bin/bash --login /home/pi/thf_windrad_logger_raspi/update/update.sh > /media/usbstick/logger_data/backup.log"
+croncmd_update="/bin/bash --login /home/pi/thf_windrad_logger_raspi/update/update.sh > /media/usbstick/logger_data/backup.log"
 cronjob_update="*/15 * * * * $croncmd_update"
 
 
