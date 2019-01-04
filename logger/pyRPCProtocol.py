@@ -310,7 +310,7 @@ print("using THF_LOGGER_SERIAL "+my_env["THF_LOGGER_SERIAL"])
 print("using THF_LOGGER_BAUD "+my_env["THF_LOGGER_BAUD"])  
 print("using THF_LOGGER_RPC_XML "+my_env["THF_LOGGER_RPC_XML"])  
 print("using MQTT_TOPIC: "+MQTT_TOPIC)
-print("using MQTT_HOST: "+MQTT_BROKER_HOST)
+print("using MQTT_HOST: "+BROKER)
 print("using git_branch: "+git_branch)
 
 last_sample_time_unix = 0
