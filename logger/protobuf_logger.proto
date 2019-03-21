@@ -45,6 +45,7 @@ message dataset {
     required bool raspberry_frequency_capped_has_occurred = 39;
     required bool raspberry_throttling_has_occurred     = 40;
     required uint32 current_git_hash     = 41;
-    
+    required uint32 raspberry_uptime_s     = 42;
+    required uint32 service_uptime_s     = 43;
     
 }

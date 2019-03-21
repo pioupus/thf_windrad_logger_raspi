@@ -6,6 +6,8 @@ import os
 import json
 import sys
 from datetime import datetime
+from datetime import timedelta
+
 import random
 import socket
 import protobuf_logger_pb2
@@ -80,6 +82,7 @@ SAMPLE_DATA_FOLDER = "/media/usbstick/sample_data/"
 LOGGER_DATA_WRITE_INTERVAL_s = 60*10
 PROTOBUF_DATA_FOLDER = "/media/usbstick/logger_data/"
 
+STARTTIME = datetime.now()
 
 if not os.path.exists(SAMPLE_DATA_FOLDER):
     os.makedirs(SAMPLE_DATA_FOLDER)
@@ -91,6 +94,10 @@ json_coeffs = {}
 with open('coeffs_smallest_error.json') as f:
     json_coeffs = json.load(f)
     
+def uptime():
+    with open('/proc/uptime', 'r') as file:
+        return str(timedelta(seconds = float(file.readline().split()[0]))) 
+
 def close_old_and_begin_new_stream(protobuf_out_stream, RASPI_IMAGE_GIT_HASH):
     if protobuf_out_stream != None:
         protobuf_out_stream.close()
@@ -557,6 +564,9 @@ while 1:
     protobuf_dataset.raspberry_throttling_has_occurred     =    (raspi_throttled & 0x40000) > 0
     protobuf_dataset.current_git_hash = RASPI_IMAGE_GIT_HASH
    
+
+    protobuf_dataset.service_uptime_s = (datetime.now() - STARTTIME).total_seconds()
+    protobuf_dataset.raspberry_uptime_s = uptime();
     protobuf_out_stream.write(protobuf_dataset)
     
     
