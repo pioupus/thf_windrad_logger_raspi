@@ -565,8 +565,8 @@ while 1:
     protobuf_dataset.current_git_hash = RASPI_IMAGE_GIT_HASH
    
 
-    protobuf_dataset.service_uptime_s = (datetime.now() - STARTTIME).total_seconds()
-    protobuf_dataset.raspberry_uptime_s = uptime();
+    protobuf_dataset.service_uptime_s = round((datetime.now() - STARTTIME).total_seconds())
+    protobuf_dataset.raspberry_uptime_s = round(uptime());
     protobuf_out_stream.write(protobuf_dataset)
     
     
