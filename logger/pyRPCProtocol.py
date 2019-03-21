@@ -96,7 +96,7 @@ with open('coeffs_smallest_error.json') as f:
     
 def uptime():
     with open('/proc/uptime', 'r') as file:
-        return str(timedelta(seconds = float(file.readline().split()[0]))) 
+        return float(file.readline().split()[0])
 
 def close_old_and_begin_new_stream(protobuf_out_stream, RASPI_IMAGE_GIT_HASH):
     if protobuf_out_stream != None:
