@@ -84,8 +84,8 @@ PROTOBUF_DATA_FOLDER = "/media/usbstick/logger_data/"
 
 def write_down_log():
     journal_ctl = subprocess.Popen('journalctl -u logger',shell=True,stdout=subprocess.PIPE).stdout.read()
-    with open(PROTOBUF_DATA_FOLDER+datetime.utcnow().strftime('%Y-%m-%dT%H_%M_%S_journalclt_out')+'.txt', 'a') as outfile:
-        outfile.write(journal_ctl)
+    with gzip.open(PROTOBUF_DATA_FOLDER+datetime.utcnow().strftime('%Y-%m-%dT%H_%M_%S_journalclt_out')+'.txt.gz', 'wb') as zipped_file:
+        zipped_file.write(journal_ctl)
         
 
 
@@ -134,7 +134,7 @@ def string_to_ord(text,length):
         result.append(0)
     return result
 
-def mqtt_on_disconnect(client, userdata, flags, rc):
+def mqtt_on_disconnect(client, userdata, rc):
     print("MQTT disconnected. Result: "+mqtt_result_numer_to_string(rc))
     print("try to reconnect..")
     client.reconnect()
