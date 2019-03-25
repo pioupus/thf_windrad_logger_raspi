@@ -82,6 +82,13 @@ SAMPLE_DATA_FOLDER = "/media/usbstick/sample_data/"
 LOGGER_DATA_WRITE_INTERVAL_s = 60*10
 PROTOBUF_DATA_FOLDER = "/media/usbstick/logger_data/"
 
+def write_down_log():
+    journal_ctl = subprocess.Popen('journalctl -u logger',shell=True,stdout=subprocess.PIPE).stdout.read()
+    with open('journalclt_out_'+PROTOBUF_DATA_FOLDER+datetime.utcnow().strftime('%Y-%m-%dT%H_%M_%S')+'.txt', 'a') as outfile:
+        journal_ctl.write(journal_ctl)
+        
+
+
 STARTTIME = datetime.now()
 
 if not os.path.exists(SAMPLE_DATA_FOLDER):
@@ -311,7 +318,8 @@ class RPCProtocol:
         
         return version_info
                     
-    
+write_down_log()
+
 my_env = os.environ.copy()
 print("using THF_LOGGER_SERIAL "+my_env["THF_LOGGER_SERIAL"])  
 print("using THF_LOGGER_BAUD "+my_env["THF_LOGGER_BAUD"])  
