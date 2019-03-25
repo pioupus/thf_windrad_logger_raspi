@@ -318,7 +318,7 @@ class RPCProtocol:
         
         return version_info
                     
-#write_down_log()
+write_down_log()
 
 my_env = os.environ.copy()
 print("using THF_LOGGER_SERIAL "+my_env["THF_LOGGER_SERIAL"])  
