@@ -91,6 +91,8 @@ def write_down_log():
 
 STARTTIME = datetime.now()
 
+write_down_log()
+
 if not os.path.exists(SAMPLE_DATA_FOLDER):
     os.makedirs(SAMPLE_DATA_FOLDER)
 
@@ -318,7 +320,7 @@ class RPCProtocol:
         
         return version_info
                     
-write_down_log()
+
 
 my_env = os.environ.copy()
 print("using THF_LOGGER_SERIAL "+my_env["THF_LOGGER_SERIAL"])  
