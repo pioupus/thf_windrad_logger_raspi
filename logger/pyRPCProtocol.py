@@ -28,12 +28,12 @@ MQTT_TOPIC = MQTT_TOPIC_DEFAULT
 
 
 my_env = os.environ.copy()
-try:
-    BROKER = my_env["MQTT_BROKER_HOST"]
-    if BROKER == "" or BROKER == None:
-        BROKER =  BROKER_DEFAULT
-except KeyError, e:
-    BROKER = BROKER_DEFAULT
+#try:
+#    BROKER = my_env["MQTT_BROKER_HOST"]
+#    if BROKER == "" or BROKER == None:
+#        BROKER =  BROKER_DEFAULT
+#except KeyError, e:
+#    BROKER = BROKER_DEFAULT
     
     
 try:
