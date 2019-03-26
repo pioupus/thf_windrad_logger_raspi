@@ -584,7 +584,7 @@ while 1:
         protobuf_out_stream = close_old_and_begin_new_stream(protobuf_out_stream, RASPI_IMAGE_GIT_HASH)
         last_logger_file_write_time_unix = round(time.time())
     
-    mqtt_publish_result = mqtt_client.publish(MQTT_TOPIC, protobuf_dataset.SerializeToString(), qos=2)
+    mqtt_publish_result = mqtt_client.publish(MQTT_TOPIC, protobuf_dataset.SerializeToString(), qos=1)
     if mqtt_publish_result.rc == mqtt.MQTT_ERR_NO_CONN:
         print("MQTT publish result: "+str(mqtt_publish_result))
         print("failed to publish MQTT. reconnect..")
