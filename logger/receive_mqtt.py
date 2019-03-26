@@ -8,7 +8,7 @@ import paho.mqtt.client as mqtt
 import protobuf_logger_pb2
 
 broker="broker.hivemq.com"
-
+broker = "18.196.22.171"
 
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
