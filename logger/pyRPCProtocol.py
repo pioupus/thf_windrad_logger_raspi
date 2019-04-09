@@ -552,6 +552,7 @@ while 1:
     protobuf_dataset.voltage_aux = float(result["arguments"]["voltage_aux"])
     protobuf_dataset.frequency_Hz = float(result["arguments"]["frequency_Hz"])
     protobuf_dataset.power = float(result["arguments"]["power"])
+    print(str(protobuf_dataset.power))
     
     protobuf_dataset.external_current_sensor = float(ext_current_sensor)
     protobuf_dataset.supply_voltage = float(result["arguments"]["supply_voltage"])
