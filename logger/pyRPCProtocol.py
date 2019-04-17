@@ -449,6 +449,10 @@ while 1:
         
     last_time_stamp = logger_unix_time;
     
+    int_signed = int(result["arguments"]["power"])
+    if(int_signed & 0x80000000):
+        result["arguments"]["power"] = -0x100000000 + int_signed
+    
     result["arguments"]["power"] = float(result["arguments"]["power"])/(100*100.0) #conversion to watt
     energy_Wh = energy_Wh + float(result["arguments"]["power"])*interval/3600.0
         
