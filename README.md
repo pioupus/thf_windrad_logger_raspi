@@ -18,7 +18,7 @@ ssh-add ~/.ssh/server_enerlyzer_receiver
 set -a; source /home/pi/logger.env; set +a
 ```
 
-to ~/bashrc
+to ~/.bashrc
 
 - run sudo apt-get update
 - install git using sudo apt-get install git
