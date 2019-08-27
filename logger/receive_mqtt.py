@@ -8,11 +8,11 @@ import paho.mqtt.client as mqtt
 import protobuf_logger_pb2
 
 broker="broker.hivemq.com"
-broker = "18.196.22.171"
+#broker = "18.196.22.171"
 
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
-    client.subscribe("enerlyzer/#")
+    client.subscribe("enerlyzer_devel/#")
 
 def on_message(client, userdata, msg):
     msg_hex = [elem.encode("hex") for elem in msg.payload]
