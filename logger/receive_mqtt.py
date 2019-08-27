@@ -12,7 +12,8 @@ broker="broker.hivemq.com"
 
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
-    client.subscribe("enerlyzer_devel/#")
+    #client.subscribe("enerlyzer_devel/#")
+    client.subscribe("enerlyzer/#")
 
 def on_message(client, userdata, msg):
     msg_hex = [elem.encode("hex") for elem in msg.payload]

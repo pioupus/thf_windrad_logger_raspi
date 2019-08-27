@@ -77,6 +77,7 @@ SAMPLE_CHANNEL_INDEXES = [
 ]
 
 SAMPLE_DATA_INTERVAL_s = 60*20
+JOURNALCTL_LOG_INTERVAL_s = 60*60*1
 SAMPLE_DATA_FOLDER = "/media/usbstick/sample_data/"
 
 LOGGER_DATA_WRITE_INTERVAL_s = 60*10
@@ -331,6 +332,7 @@ print("using MQTT_HOST: "+BROKER)
 print("using git_branch: "+git_branch)
 
 last_sample_time_unix = 0
+last_jounralctl_time_unix = 0
 
 RASPI_IMAGE_GIT_HASH= subprocess.Popen('git log -1 --format="format:0x%h"',shell=True,stdout=subprocess.PIPE).stdout.read() # 0x0d9b264
 RASPI_IMAGE_GIT_HASH=int(RASPI_IMAGE_GIT_HASH, 0)
@@ -595,7 +597,11 @@ while 1:
         print("failed to publish MQTT. reconnect..")
         mqtt_client.reconnect();
         
-    mqtt_client.loop(timeout=1.0)    
+    mqtt_client.loop(timeout=1.0) 
+    if last_jounralctl_time_unix+JOURNALCTL_LOG_INTERVAL_s < round(time.time()):
+        write_down_log()
+        last_jounralctl_time_unix = round(time.time())
+        
     if SIMULATE_RPC:
         result = {}
     else:
