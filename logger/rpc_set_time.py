@@ -1,6 +1,5 @@
 #!/usr/bin/env python 
 import subprocess
-from influxdb import InfluxDBClient
 import time
 import os
 import json
