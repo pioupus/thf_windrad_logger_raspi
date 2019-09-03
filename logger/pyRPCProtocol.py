@@ -368,7 +368,7 @@ if not SIMULATE_RPC:
 
 
 mqtt_client= mqtt.Client("client-001")
-mqtt_client.username_pw_set(username=my_env["MQTT_BROKER_PW"],password=my_env["MQTT_BROKER_UN"])
+mqtt_client.username_pw_set(username=my_env["MQTT_BROKER_UN"],password=my_env["MQTT_BROKER_PW"])
 mqtt_client.connect(BROKER)
 mqtt_client.on_disconnect = mqtt_on_disconnect
 mqtt_client.on_connect = mqtt_on_connect
