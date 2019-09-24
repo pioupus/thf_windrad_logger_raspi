@@ -349,11 +349,20 @@ if not SIMULATE_RPC:
     result = proto.call("get_adc_values",arguments_get_adc_values)
     print("rpc_result: "+str(result))
 
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(("8.8.8.8", 80))
-    my_IP_address = s.getsockname()[0]
-    s.close()
+    try:
+        MQTT_TOPIC = my_env["MQTT_TOPIC"]
+        if MQTT_TOPIC == "" or MQTT_TOPIC == None:
+            MQTT_TOPIC =  MQTT_TOPIC_DEFAULT
 
+        MQTT_TOPIC = MQTT_TOPIC_DEFAULT
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        my_IP_address = s.getsockname()[0]
+        s.close()
+    except socket.error, e:
+        print(e)
+        my_IP_address = "0.0.0.0"
+        
     arguments_sys_stat = {}
     arguments_sys_stat["count_of_screens"] = 1
     arguments_sys_stat["row"] = 0
@@ -369,9 +378,9 @@ if not SIMULATE_RPC:
 
 mqtt_client= mqtt.Client("client-001")
 mqtt_client.username_pw_set(username=my_env["MQTT_BROKER_UN"],password=my_env["MQTT_BROKER_PW"])
-mqtt_client.connect(BROKER)
 mqtt_client.on_disconnect = mqtt_on_disconnect
 mqtt_client.on_connect = mqtt_on_connect
+mqtt_client.connect(BROKER)
 
 my_env = os.environ.copy()    
    

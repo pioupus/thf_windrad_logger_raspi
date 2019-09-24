@@ -1,6 +1,6 @@
 [Unit]
 Description=logger service
-After=network.target influxdb.service
+#After=network.target influxdb.service
 StartLimitInterval=200
 StartLimitBurst=10
 RequiresMountsFor=/media/usbstick/
