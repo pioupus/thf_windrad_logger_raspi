@@ -25,7 +25,7 @@ BROKER = BROKER_DEFAULT
 MQTT_TOPIC_DEFAULT = "enerlyzer/live/pwr"
 MQTT_TOPIC = MQTT_TOPIC_DEFAULT
 
-
+mqtt_reconnect_on_next_trial=True
 
 my_env = os.environ.copy()
 try:
@@ -140,7 +140,13 @@ def string_to_ord(text,length):
 def mqtt_on_disconnect(client, userdata, rc):
     print("MQTT disconnected. Result: "+mqtt_result_numer_to_string(rc))
     print("try to reconnect..")
-    client.reconnect()
+    try:
+        client.reconnect()
+        mqtt_reconnect_on_next_trial=False
+    except socket.error, e:
+        print(e)
+        mqtt_reconnect_on_next_trial=True
+
      
 def mqtt_on_connect(client, userdata, flags, rc):
     print("MQTT connected. Result: "+mqtt_result_numer_to_string(rc))  
@@ -380,7 +386,8 @@ mqtt_client= mqtt.Client("client-001")
 mqtt_client.username_pw_set(username=my_env["MQTT_BROKER_UN"],password=my_env["MQTT_BROKER_PW"])
 mqtt_client.on_disconnect = mqtt_on_disconnect
 mqtt_client.on_connect = mqtt_on_connect
-mqtt_client.connect(BROKER)
+
+            
 
 my_env = os.environ.copy()    
    
@@ -397,6 +404,13 @@ last_logger_file_write_time_unix = round(time.time())
 protobuf_out_stream = close_old_and_begin_new_stream(None, RASPI_IMAGE_GIT_HASH)
     
 while 1:
+    if mqtt_reconnect_on_next_trial:
+        try:
+            mqtt_client.connect(BROKER)
+            mqtt_reconnect_on_next_trial=False
+        except socket.error, e:
+            print(e)
+            mqtt_reconnect_on_next_trial=True
     test_function_param = {"channel":3}
     start_time = time.clock()
     result = {}
