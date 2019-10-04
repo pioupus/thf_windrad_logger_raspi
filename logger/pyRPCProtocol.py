@@ -18,7 +18,7 @@ import csv
 import gzip
 import stream
 
-
+#
 BROKER_DEFAULT = "broker.hivemq.com"
 BROKER = BROKER_DEFAULT
 
