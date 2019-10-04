@@ -619,7 +619,12 @@ while 1:
     if mqtt_publish_result.rc == mqtt.MQTT_ERR_NO_CONN:
         print("MQTT publish result: "+str(mqtt_publish_result))
         print("failed to publish MQTT. reconnect..")
-        mqtt_client.reconnect();
+        try:
+            mqtt_client.reconnect()
+            mqtt_reconnect_on_next_trial=False
+        except socket.error, e:
+            print(e)
+            mqtt_reconnect_on_next_trial=True
         
     mqtt_client.loop(timeout=1.0) 
     if last_jounralctl_time_unix+JOURNALCTL_LOG_INTERVAL_s < round(time.time()):
