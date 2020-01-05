@@ -28,6 +28,8 @@ DPKG="/usr/bin/dpkg"; AWK="/usr/bin/awk"; MAIL="/usr/bin/mail"
 CUT="/usr/bin/cut"; TR="/usr/bin/tr"; RSYNC="/usr/bin/rsync"
 LAST="last"; INC="--link-dest=$TARGET/$LAST"
 
+ssh -i$SSH_KEYFILE $SSHUSER@$TOSSH -t 'mkdir -p '$TARGET
+
 LOG=$0.log
 $DATE > $LOG
 
