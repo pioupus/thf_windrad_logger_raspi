@@ -280,7 +280,7 @@ else:
 for channel_entry in CHANNEL_ENTRIES:
     if channel_entry["active"]:
         channel_index = CHANNEL_INDEXES[channel_entry["channel_name"]][channel_entry["rpc_name"]]
-        if len(json_coeffs[channel_entry["calib_name"]]["coeffs_rounded"]["coeff"]) < 2:
+        if len(json_coeffs[channel_entry["calib_name"]]["coeffs_rounded"]["coeff"]) < 3:
             calib_data[channel_entry["channel_name"]][channel_index]["c2_over_65536"] = 0
         else:
             calib_data[channel_entry["channel_name"]][channel_index]["c2_over_65536"] = int(json_coeffs[channel_entry["calib_name"]]["coeffs_rounded"]["coeff"][2])
