@@ -245,7 +245,7 @@ CHANNEL_ENTRIES=[
 
 json_coeffs = {}
 bin_path = my_env["THF_LOGGER_RPC_BIN_PATH"]
-with open(bin_path+'../../logger/coeffs_smallest_error.json') as f:
+with open(bin_path+'../../logger/data_smallest_error_since_2020_01_01.json') as f:
     json_coeffs = json.load(f)
 
 CHANNEL_INDEXES = {}
@@ -280,7 +280,7 @@ else:
 for channel_entry in CHANNEL_ENTRIES:
     if channel_entry["active"]:
         channel_index = CHANNEL_INDEXES[channel_entry["channel_name"]][channel_entry["rpc_name"]]
-        print(str(channel_entry["calib_name"]) +"  "+str(json_coeffs[channel_entry["calib_name"]]) +"   "+str(json_coeffs[channel_entry["calib_name"]]["coeffs_rounded"])+ "   " +str(json_coeffs[channel_entry["calib_name"]]["coeffs_rounded"]["coeff"]))
+    #    print(str(channel_entry["calib_name"]) +"  "+str(json_coeffs[channel_entry["calib_name"]]) +"   "+str(json_coeffs[channel_entry["calib_name"]]["coeffs_rounded"])+ "   " +str(json_coeffs[channel_entry["calib_name"]]["coeffs_rounded"]["coeff"]))
         if len(json_coeffs[channel_entry["calib_name"]]["coeffs_rounded"]["coeff"]) < 3:
             calib_data[channel_entry["channel_name"]][channel_index]["c2_over_65536"] = 0
         else:
