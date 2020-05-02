@@ -280,9 +280,12 @@ else:
 for channel_entry in CHANNEL_ENTRIES:
     if channel_entry["active"]:
         channel_index = CHANNEL_INDEXES[channel_entry["channel_name"]][channel_entry["rpc_name"]]
-        calib_data[channel_entry["channel_name"]][channel_index]["c2_over_65536"] = int(json_coeffs[channel_entry["calib_name"]]["coeffs_rounded"]["coeff"]["coeff_2"])
-        calib_data[channel_entry["channel_name"]][channel_index]["c1_over_65536"] = int(json_coeffs[channel_entry["calib_name"]]["coeffs_rounded"]["coeff"]["coeff_1"])
-        calib_data[channel_entry["channel_name"]][channel_index]["c0_over_65536"] = int(json_coeffs[channel_entry["calib_name"]]["coeffs_rounded"]["coeff"]["coeff_0"])
+        if len(json_coeffs[channel_entry["calib_name"]]["coeffs_rounded"]["coeff"]) < 2:
+            calib_data[channel_entry["channel_name"]][channel_index]["c2_over_65536"] = 0
+        else:
+            calib_data[channel_entry["channel_name"]][channel_index]["c2_over_65536"] = int(json_coeffs[channel_entry["calib_name"]]["coeffs_rounded"]["coeff"][2])
+        calib_data[channel_entry["channel_name"]][channel_index]["c1_over_65536"] = int(json_coeffs[channel_entry["calib_name"]]["coeffs_rounded"]["coeff"][1])
+        calib_data[channel_entry["channel_name"]][channel_index]["c0_over_65536"] = int(json_coeffs[channel_entry["calib_name"]]["coeffs_rounded"]["coeff"][0])
 
 set_calibration_arguments = {}
 set_calibration_arguments["calibration_data_in"] = calib_data
